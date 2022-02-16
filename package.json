@@ -1,0 +1,53 @@
+{
+	"name": "gmf-backend",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"serve": "node index.js",
+		"start": "nodemon index.js",
+		"lint": "eslint index.js"
+	},
+	"author": "Abdul Aziz Khoso",
+	"license": "ISC",
+	"devDependencies": {
+		"eslint": "^8.2.0",
+		"eslint-config-airbnb": "^18.2.1",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-plugin-import": "^2.25.3"
+	},
+	"eslintConfig": {
+		"env": {
+			"es6": true
+		},
+		"parserOptions": {
+			"ecmaVersion": "latest",
+			"sourceType": "module"
+		},
+		"extends": [
+			"airbnb"
+		]
+	},
+	"dependencies": {
+		"apollo-server-core": "^3.5.0",
+		"apollo-server-express": "^3.5.0",
+		"bcryptjs": "^2.4.3",
+		"cors": "^2.8.5",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.1",
+		"google-auth-library": "^7.10.3",
+		"graphql": "^16.0.1",
+		"image-to-uri": "^1.0.0",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^6.0.13",
+		"mongoose-auto-increment": "^5.0.1",
+		"multer": "^1.4.4",
+		"nodemailer": "^6.7.2",
+		"nodemon": "^2.0.15"
+	},
+	"engines": {
+		"node": "14.x"
+	}
+}

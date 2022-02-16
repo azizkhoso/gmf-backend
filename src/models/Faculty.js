@@ -1,0 +1,51 @@
+/* eslint-disable import/extensions */
+import mongoose from 'mongoose';
+import autoIncrement from 'mongoose-auto-increment';
+import db from '../db/index.js';
+
+autoIncrement.initialize(db);
+
+const FacultySchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  institute: {
+    type: Number,
+    required: true,
+  },
+  department: {
+    type: String,
+    required: true,
+  },
+  courses: {
+    type: [String],
+    required: true,
+  },
+  ratings: {
+    type: [Number],
+    default: [],
+  },
+  levelOfDifficulty: {
+    type: Number,
+    default: 0,
+  },
+  attributes: {
+    type: [String],
+    default: [],
+  },
+});
+
+FacultySchema.plugin(autoIncrement.plugin, 'Faculty');
+const Faculty = mongoose.model('Faculty', FacultySchema);
+
+export default Faculty;
