@@ -10,10 +10,12 @@ autoIncrement.initialize(db);
 const RatingSchema = mongoose.Schema({
   user: {
     type: Number,
+    ref: 'User',
     required: true,
   },
   faculty: {
     type: Number,
+    ref: 'Faculty',
     required: true,
   },
   course: {
@@ -63,11 +65,24 @@ const RatingSchema = mongoose.Schema({
     required: true,
   },
   likes: {
-    type: [Number],
+    type: [{
+      type: Number,
+      ref: 'User',
+    }],
     default: [],
   },
   disLikes: {
-    type: [Number],
+    type: [{
+      type: Number,
+      ref: 'User',
+    }],
+    default: [],
+  },
+  reports: {
+    type: [{
+      type: Number,
+      ref: 'Report',
+    }],
     default: [],
   },
 });

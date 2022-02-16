@@ -17,7 +17,9 @@ const BlogSchema = mongoose.Schema({
   },
   writtenBy: {
     type: Number,
+    ref: 'Admin',
     required: true,
+    default: -1,
   },
   tags: {
     type: [String],

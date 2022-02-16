@@ -25,10 +25,14 @@ const UserSchema = new mongoose.Schema({
   },
   institute: {
     type: Number,
+    ref: 'Institute',
     default: -1,
   },
   savedFaculties: {
-    type: [Number],
+    type: [{
+      type: Number,
+      ref: 'Faculty',
+    }],
     default: [],
   },
   graduationYear: {

@@ -19,6 +19,13 @@ const AdminSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  blogs: {
+    type: [{
+      type: Number,
+      ref: 'Blog',
+    }],
+    default: [],
+  },
   facebookLink: {
     type: String,
     default: '',

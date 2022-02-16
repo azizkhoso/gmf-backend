@@ -8,10 +8,12 @@ autoIncrement.initialize(db);
 const ReportSchema = mongoose.Schema({
   user: {
     type: Number,
+    ref: 'User',
     required: true,
   },
   rating: {
     type: Number,
+    ref: 'Rating',
     required: true,
   },
   summary: {

@@ -25,7 +25,10 @@ const InstituteSchema = new mongoose.Schema({
     default: new Date(),
   },
   faculties: {
-    type: [String],
+    type: [{
+      type: Number,
+      ref: 'Faculty',
+    }],
     default: [],
   },
 });

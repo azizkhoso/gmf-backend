@@ -52,7 +52,7 @@ async function startApolloServer() {
       try {
         verifiedToken = jwt.verify(req.headers.authentication, secret);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
       return { ...verifiedToken, token };
     },

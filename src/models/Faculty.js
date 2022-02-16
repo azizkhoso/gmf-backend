@@ -21,6 +21,7 @@ const FacultySchema = new mongoose.Schema({
   },
   institute: {
     type: Number,
+    ref: 'Institute',
     required: true,
   },
   department: {
