@@ -30,6 +30,9 @@ const resolvers = {
     ...teamMember.queryResolvers,
     ...aboutUs.queryResolvers,
   },
+  Mutation: {
+    ...user.mutationResolvers,
+  },
   Date: new GraphQLScalarType({
     name: 'Date',
     description: 'A valid JavaScript Date object',

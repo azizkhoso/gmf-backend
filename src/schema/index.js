@@ -146,8 +146,9 @@ const typeDefs = gql`
     allMembers: Int!
     institutes: [Institute]!
     faculties: [Faculty]!
-    users: [User]!
-    ratings: [Rating]!
+    users(offset:Int limit:Int): [User]!
+    user(email:String!): User!
+    ratings(date:Date user:Int faculty:Int offset:Int limit:Int): [Rating]!
     reports: [Report]!
     admins: [Admin]!
     blogs: [Blog]!
@@ -158,6 +159,12 @@ const typeDefs = gql`
     aboutUs: AboutUs!
     loggedAdmin: LoggedAdmin!
     loggedUser: LoggedUser!
+  }
+
+  type Mutation {
+    newUser(firstName:String! lastName:String! email:String! password:String! confirmPassword:String!): User!
+    adminUpdateUser(_id:Int! firstName:String lastName:String email:String password:String confirmPassword:String): User!
+    deleteUser(_id:Int!): ID!
   }
 
 `;

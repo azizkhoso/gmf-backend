@@ -16,9 +16,36 @@ const allRatings = async () => {
   const result = await Rating.count();
   return result;
 };
-
-const ratings = async () => { // This ratings is different from one in helperFunctions.js
-  const result = await Rating.find();
+// This ratings is different from one in helperFunctions.js
+const ratings = async (parent, args) => {
+  const query = Rating.find();
+  // Date filter
+  if (args.date) {
+    // Ratings of month and year in given date are fetched
+    // Hence for 2022-1-13, ratings from 2022-1-1 to 2022-1-31 are filtered
+    const date = new Date(args.date);
+    const startDate = new Date(date.getFullYear(), date.getMonth(), 0);// 30th or 31st of prev month
+    const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 1); // 1st of next month
+    query.where('createdAt').gt(startDate).lt(endDate);
+  }
+  // user filter
+  if (args.user) {
+    query.where('user').equals(args.user);
+  }
+  // faculty filter
+  if (args.faculty) {
+    query.where('faculty').equals(args.faculty);
+  }
+  // offset filter
+  if (args.offset) {
+    query.skip(args.offset);
+  }
+  // limit filter
+  if (args.limit) {
+    query.limit(args.limit);
+  }
+  // -----------
+  const result = await query.exec();
   if (!result) return [];
   return result.map((rate) => ({
     ...rate._doc,
