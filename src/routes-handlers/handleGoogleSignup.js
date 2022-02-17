@@ -1,8 +1,15 @@
-import AllowedEmail from '../models/AllowedEmail.js';
+/* eslint-disable camelcase */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable import/extensions */
+/* eslint-disable consistent-return */
 import { OAuth2Client } from 'google-auth-library';
-import transport from '../resolvers/transport.js';
 import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import AllowedEmail from '../models/AllowedEmail.js';
+import transport from '../resolvers/transport.js';
+import User from '../models/User.js';
 
+const secret = process.env.JWT_SECRET;
 const clientId = process.env.OAUTH_CLIENT;
 const client = new OAuth2Client(clientId);
 

@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+import transport from '../resolvers/transport.js';
 
 async function handleContactUs(req, res) {
   try {

@@ -1,3 +1,12 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable import/extensions */
+/* eslint-disable consistent-return */
+import jwt from 'jsonwebtoken';
+import Admin from '../models/Admin.js';
+import User from '../models/User.js';
+import AllowedEmail from '../models/AllowedEmail.js';
+
+const secret = process.env.JWT_SECRET;
 
 async function adminLogin(req, res) {
   try {
