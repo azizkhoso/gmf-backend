@@ -9,6 +9,11 @@ import rating from './rating.js';
 import report from './report.js';
 import admin from './admin.js';
 import blog from './blog.js';
+import allowedEmail from './allowedEmail.js';
+import ad from './ad.js';
+import faq from './faq.js';
+import teamMember from './teamMember.js';
+import aboutUs from './aboutUs.js';
 
 const resolvers = {
   Query: {
@@ -19,6 +24,11 @@ const resolvers = {
     ...report.queryResolvers,
     ...admin.queryResolvers,
     ...blog.queryResolvers,
+    ...allowedEmail.queryResolvers,
+    ...ad.queryResolvers,
+    ...faq.queryResolvers,
+    ...teamMember.queryResolvers,
+    ...aboutUs.queryResolvers,
   },
   Date: new GraphQLScalarType({
     name: 'Date',

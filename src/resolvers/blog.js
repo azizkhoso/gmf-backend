@@ -7,6 +7,11 @@ import helperFunctions from './helperFunctions.js';
 const { admin } = helperFunctions;
 
 // Resolvers
+const allBlogs = async () => {
+  const result = await Blog.count();
+  return result;
+};
+
 const blogs = async () => { // This blogs is different from one in helperFunctions.js
   const result = await Blog.find();
   if (!result) return [];
@@ -18,6 +23,7 @@ const blogs = async () => { // This blogs is different from one in helperFunctio
 
 export default {
   queryResolvers: {
+    allBlogs,
     blogs,
   },
   mutationResolvers: {

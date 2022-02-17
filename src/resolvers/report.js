@@ -7,6 +7,11 @@ import helperFunctions from './helperFunctions.js';
 const { user, rating } = helperFunctions;
 
 // Resolvers
+const allReports = async () => {
+  const result = await Report.count();
+  return result;
+};
+
 const reports = async () => { // This reports is different from one in helperFunctions.js
   const result = await Report.find();
   if (!result) return [];
@@ -19,6 +24,7 @@ const reports = async () => { // This reports is different from one in helperFun
 
 export default {
   queryResolvers: {
+    allReports,
     reports,
   },
   mutationResolvers: {

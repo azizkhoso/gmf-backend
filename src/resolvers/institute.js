@@ -5,6 +5,11 @@ import Institute from '../models/Institute.js';
 import helperFunctions from './helperFunctions.js';
 
 // Resolvers
+const allInstitutes = async () => {
+  const result = await Institute.count();
+  return result;
+};
+
 const institutes = async () => {
   const result = await Institute.find();
   if (!result) return [];
@@ -16,6 +21,7 @@ const institutes = async () => {
 
 export default {
   queryResolvers: {
+    allInstitutes,
     institutes,
   },
   mutationResolvers: {

@@ -84,7 +84,66 @@ const typeDefs = gql`
     createdAt: Date!
   }
 
+  type AllowedEmail {
+    _id: ID!
+    emailDomain: String!
+    isAllowed: Boolean!
+    status: String!
+  }
+
+  type Faq {
+    _id: ID!
+    title: String!
+    category: String!
+    answer: String!
+  }
+
+  type Ad {
+    _id: ID!
+    title: String!
+    locationId: String!
+    code: String!
+    status: String!
+  }
+
+  type Member {
+    _id: ID!
+    image: String!
+    name: String!
+    role: String!
+    facebookLink: String!
+    instagramLink: String!
+    linkedinLink: String!
+  }
+
+  type AboutUs {
+    ourStory: String
+    whoWeAre: String
+    ourMission: String
+  }
+
+  type LoggedUser {
+    user: User!
+    token: String!
+  }
+
+  type LoggedAdmin {
+    admin: Admin!
+    token: String!
+  }
+
   type Query {
+    allFaculties: Int!
+    allUsers: Int!
+    allInstitutes: Int!
+    allRatings: Int!
+    allAdmins: Int!
+    allAds: Int!
+    allAllowedEmails: Int!
+    allFaqs: Int!
+    allBlogs: Int!
+    allReports: Int!
+    allMembers: Int!
     institutes: [Institute]!
     faculties: [Faculty]!
     users: [User]!
@@ -92,6 +151,13 @@ const typeDefs = gql`
     reports: [Report]!
     admins: [Admin]!
     blogs: [Blog]!
+    allowedEmails: [AllowedEmail]!
+    ads: [Ad]!
+    faqs: [Faq]!
+    members: [Member]!
+    aboutUs: AboutUs!
+    loggedAdmin: LoggedAdmin!
+    loggedUser: LoggedUser!
   }
 
 `;

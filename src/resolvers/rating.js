@@ -12,6 +12,11 @@ const {
 } = helperFunctions;
 
 // Resolvers
+const allRatings = async () => {
+  const result = await Rating.count();
+  return result;
+};
+
 const ratings = async () => { // This ratings is different from one in helperFunctions.js
   const result = await Rating.find();
   if (!result) return [];
@@ -27,6 +32,7 @@ const ratings = async () => { // This ratings is different from one in helperFun
 
 export default {
   queryResolvers: {
+    allRatings,
     ratings,
   },
   mutationResolvers: {

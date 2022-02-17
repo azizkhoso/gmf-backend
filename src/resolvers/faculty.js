@@ -7,6 +7,11 @@ import helperFunctions from './helperFunctions.js';
 const { institute, ratings } = helperFunctions;
 
 // Resolvers
+const allFaculties = async () => {
+  const result = await Faculty.count();
+  return result;
+};
+
 const faculties = async () => { // This faculties is different from one in helperFunctions.js
   const result = await Faculty.find();
   if (!result) return [];
@@ -19,6 +24,7 @@ const faculties = async () => { // This faculties is different from one in helpe
 
 export default {
   queryResolvers: {
+    allFaculties,
     faculties,
   },
   mutationResolvers: {
