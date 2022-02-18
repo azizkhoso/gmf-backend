@@ -33,6 +33,10 @@ const allUsers = async () => {
 
 const users = async (parent, args) => { // This users is different from one in helperFunctions.js
   const query = User.find();
+  // name filter; users whose first name starts with name given in arguments
+  if (args.firstName) {
+    query.where({ firstName: { $regex: new RegExp(args.firstName, 'ig') } }); // ig represent case-insensitive and globally in full string
+  }
   // offset filter
   if (args.offset) {
     query.skip(args.offset);

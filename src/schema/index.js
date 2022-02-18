@@ -146,7 +146,7 @@ const typeDefs = gql`
     allMembers: Int!
     institutes: [Institute]!
     faculties: [Faculty]!
-    users(offset:Int limit:Int): [User]!
+    users(firstName:String offset:Int limit:Int): [User]!
     user(email:String!): User!
     ratings(date:Date user:Int faculty:Int offset:Int limit:Int): [Rating]!
     reports: [Report]!
