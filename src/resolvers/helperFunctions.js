@@ -56,7 +56,7 @@ const faculty = async (facultyId) => {
   }
   return {
     ...fac._doc,
-    institute: institute.bind(this, fac._doc.faculty),
+    institute: institute.bind(this, fac._doc.institute),
     ratings: ratings.bind(this, fac._doc.ratings),
   };
 };
