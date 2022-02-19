@@ -154,7 +154,7 @@ const typeDefs = gql`
     admins(name:String offset:Int limit:Int): [Admin]!
     blogs: [Blog]!
     allowedEmails: [AllowedEmail]!
-    ads: [Ad]!
+    ads(title:String offset:Int limit:Int): [Ad]!
     faqs: [Faq]!
     members: [Member]!
     aboutUs: AboutUs!
@@ -176,6 +176,9 @@ const typeDefs = gql`
     updateAdmin(_id:Int! name:String email:String password:String newPassword:String status:String facebookLink:String instagramLink:String twitterLink:String): Admin!
     deleteAdmin(_id:Int!): ID!
     updateAboutUs(ourStory:String whoWeAre:String ourMission:String): AboutUs!
+    newAd(title:String! locationId:String! code:String!): Ad!
+    updateAd(_id:Int! title:String locationId:String code:String status:String): Ad!
+    deleteAd(_id:Int!): ID!
   }
 
 `;
