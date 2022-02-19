@@ -144,8 +144,9 @@ const typeDefs = gql`
     allBlogs: Int!
     allReports: Int!
     allMembers: Int!
-    institutes: [Institute]!
-    faculties: [Faculty]!
+    institute(_id:Int!): Institute!
+    institutes(name:String offset:Int limit:Int): [Institute]!
+    faculties(firstName:String institute:Int offset:Int limit:Int): [Faculty]!
     users(firstName:String offset:Int limit:Int): [User]!
     user(email:String!): User!
     ratings(date:Date user:Int faculty:Int offset:Int limit:Int): [Rating]!
@@ -165,6 +166,12 @@ const typeDefs = gql`
     newUser(firstName:String! lastName:String! email:String! password:String! confirmPassword:String!): User!
     adminUpdateUser(_id:Int! firstName:String lastName:String email:String password:String confirmPassword:String): User!
     deleteUser(_id:Int!): ID!
+    newInstitute(name:String! email:String! courses:[String]!): Institute!
+    updateInstitute(_id:Int! name:String email:String courses:[String]): Institute!
+    deleteInstitute(_id:Int!): ID!
+    newFaculty(firstName:String! lastName:String! email:String! institute:Int! department:String! courses:[String!]!): Faculty!
+    updateFaculty(_id:Int! firstName:String lastName:String email:String institute:Int department:String courses:[String]): Faculty!
+    deleteFaculty(_id:Int!): ID!
   }
 
 `;
