@@ -152,7 +152,7 @@ const typeDefs = gql`
     ratings(date:Date user:Int faculty:Int offset:Int limit:Int): [Rating]!
     reports: [Report]!
     admins(name:String offset:Int limit:Int): [Admin]!
-    blogs: [Blog]!
+    blogs(title:String offset:Int limit:Int): [Blog]!
     allowedEmails(emailDomain:String offset:Int limit:Int): [AllowedEmail]!
     ads(title:String offset:Int limit:Int): [Ad]!
     faqs(title:String offset:Int limit:Int): [Faq]!
@@ -185,6 +185,9 @@ const typeDefs = gql`
     newFaq(title:String! category:String! answer:String!): Faq!
     updateFaq(_id:Int! title:String category:String answer:String): Faq!
     deleteFaq(_id:Int!): ID!
+    newBlog(title:String! content:String! tags:[String]): Blog!
+    updateBlog(_id:Int! title:String content:String tags:[String]): Blog!
+    deleteBlog(_id:Int!): ID!
   }
 
 `;

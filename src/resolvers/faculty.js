@@ -69,7 +69,7 @@ const newFaculty = async (parent, args, context) => {
   try {
     result = await Faculty.create(args);
     // New faculty should be listed in institute
-    instResult.updateOne({ $push: { faculties: result._doc._id } });
+    await instResult.updateOne({ $push: { faculties: result._doc._id } });
   } catch (e) {
     if (e.code === 11000) throw new Error('Faculty already exists');
     else throw e;
@@ -117,7 +117,10 @@ const updateFaculty = async (parent, args, context) => {
 
 const deleteFaculty = async (parent, args, context) => {
   if (!context.admin) throw new Error('Not logged in, please login first');
-  await Faculty.deleteOne({ _id: args._id });
+  const fac = await Faculty.findById(args._id);
+  if (!fac || !fac._doc) throw new Error('Faculty not found');
+  await Institute.findOneAndUpdate({ _id: fac._doc.institute }, { $pull: { faculties: args._id } });
+  await fac.deleteOne();
   return args._id;
 };
 

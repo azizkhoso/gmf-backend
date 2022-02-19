@@ -39,6 +39,7 @@ const resolvers = {
     ...ad.mutationResolvers,
     ...allowedEmail.mutationResolvers,
     ...faq.mutationResolvers,
+    ...blog.mutationResolvers,
   },
   Date: new GraphQLScalarType({
     name: 'Date',
