@@ -155,7 +155,7 @@ const typeDefs = gql`
     blogs: [Blog]!
     allowedEmails(emailDomain:String offset:Int limit:Int): [AllowedEmail]!
     ads(title:String offset:Int limit:Int): [Ad]!
-    faqs: [Faq]!
+    faqs(title:String offset:Int limit:Int): [Faq]!
     members: [Member]!
     aboutUs: AboutUs!
     loggedAdmin: LoggedAdmin!
@@ -182,6 +182,9 @@ const typeDefs = gql`
     newAllowedEmail(emailDomain:String! isAllowed:Boolean!): AllowedEmail!
     updateAllowedEmail(_id:Int! emailDomain:String isAllowed:Boolean status:String): AllowedEmail!
     deleteEmail(_id:Int!): ID!
+    newFaq(title:String! category:String! answer:String!): Faq!
+    updateFaq(_id:Int! title:String category:String answer:String): Faq!
+    deleteFaq(_id:Int!): ID!
   }
 
 `;
