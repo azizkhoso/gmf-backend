@@ -151,7 +151,7 @@ const typeDefs = gql`
     user(email:String!): User!
     ratings(date:Date user:Int faculty:Int offset:Int limit:Int): [Rating]!
     reports: [Report]!
-    admins: [Admin]!
+    admins(name:String offset:Int limit:Int): [Admin]!
     blogs: [Blog]!
     allowedEmails: [AllowedEmail]!
     ads: [Ad]!
@@ -172,6 +172,10 @@ const typeDefs = gql`
     newFaculty(firstName:String! lastName:String! email:String! institute:Int! department:String! courses:[String!]!): Faculty!
     updateFaculty(_id:Int! firstName:String lastName:String email:String institute:Int department:String courses:[String]): Faculty!
     deleteFaculty(_id:Int!): ID!
+    newAdmin(name:String! email:String! password:String! confirmPassword:String! facebookLink:String instagramLink:String twitterLink:String): Admin!
+    updateAdmin(_id:Int! name:String email:String password:String newPassword:String status:String facebookLink:String instagramLink:String twitterLink:String): Admin!
+    deleteAdmin(_id:Int!): ID!
+    updateAboutUs(ourStory:String whoWeAre:String ourMission:String): AboutUs!
   }
 
 `;

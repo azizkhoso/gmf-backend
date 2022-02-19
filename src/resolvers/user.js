@@ -89,7 +89,7 @@ const newUser = async (parent, args) => {
   const confirmationCode = (Math.random() * 10000).toFixed(0);
   const usr = {
     ...args,
-    email: args.email.toLowerCase(),
+    email: args.email,
     confirmationCode,
   };
   const allowedEmails = await AllowedEmail.find(

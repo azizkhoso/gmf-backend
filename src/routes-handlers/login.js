@@ -17,6 +17,9 @@ async function adminLogin(req, res) {
         verifiedToken = await jwt.verify(tk, secret);
         if (verifiedToken.role === 'admin') {
           const admin = await Admin.findOne({ email: verifiedToken.admin }, { password: 0 });
+          if (admin.status !== 'Active') {
+            return res.json({ error: true, message: 'Account not active, can not login' });
+          }
           return res.json({ admin, token: tk });
         }
         throw new Error('invalid verified token');
@@ -25,11 +28,14 @@ async function adminLogin(req, res) {
       }
     } else {
       const args = req.body;
-      const result = await Admin.findOne({ email: args.email.toLowerCase() });
+      const result = await Admin.findOne({ email: args.email });
       if (!result || !result._doc) {
         return res.json({ error: true, message: 'Admin does not exist' });
       }
       const admin = result._doc;
+      if (admin.status !== 'Active') {
+        return res.json({ error: true, message: 'Account not active, can not login' });
+      }
       if (admin.password !== args.password) {
         return res.json({ error: true, message: 'Wrong password, please try again' });
       }
@@ -64,7 +70,7 @@ async function userLogin(req, res) {
       }
     } else {
       const args = req.body;
-      const result = await User.findOne({ email: args.email.toLowerCase() });
+      const result = await User.findOne({ email: args.email });
       if (!result || !result._doc) {
         return res.json({ error: true, message: 'User does not exist' });
       }

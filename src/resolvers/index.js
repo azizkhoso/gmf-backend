@@ -34,6 +34,8 @@ const resolvers = {
     ...user.mutationResolvers,
     ...institute.mutationResolvers,
     ...faculty.mutationResolvers,
+    ...admin.mutationResolvers,
+    ...aboutUs.mutationResolvers,
   },
   Date: new GraphQLScalarType({
     name: 'Date',
