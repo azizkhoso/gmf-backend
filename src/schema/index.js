@@ -153,7 +153,7 @@ const typeDefs = gql`
     reports: [Report]!
     admins(name:String offset:Int limit:Int): [Admin]!
     blogs: [Blog]!
-    allowedEmails: [AllowedEmail]!
+    allowedEmails(emailDomain:String offset:Int limit:Int): [AllowedEmail]!
     ads(title:String offset:Int limit:Int): [Ad]!
     faqs: [Faq]!
     members: [Member]!
@@ -179,6 +179,9 @@ const typeDefs = gql`
     newAd(title:String! locationId:String! code:String!): Ad!
     updateAd(_id:Int! title:String locationId:String code:String status:String): Ad!
     deleteAd(_id:Int!): ID!
+    newAllowedEmail(emailDomain:String! isAllowed:Boolean!): AllowedEmail!
+    updateAllowedEmail(_id:Int! emailDomain:String isAllowed:Boolean status:String): AllowedEmail!
+    deleteEmail(_id:Int!): ID!
   }
 
 `;

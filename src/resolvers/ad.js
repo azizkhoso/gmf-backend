@@ -66,7 +66,7 @@ const updateAd = async (parent, args, context) => {
   // If title is supplied in args, check if that already exists with different id
   if (args.title) {
     const anotherAd = await Ad.findOne({ title: { $regex: new RegExp(args.title, 'ig') } });
-    if (anotherAd) throw new Error('Ad title already exists');
+    if (anotherAd && anotherAd._doc._id !== foundAd._doc._id) throw new Error('Ad title already exists');
   }
   let ad;
   try {
