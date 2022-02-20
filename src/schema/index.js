@@ -1,7 +1,18 @@
 import { gql } from 'apollo-server-core';
 
 const typeDefs = gql`
+  # Custom Date type
   scalar Date
+  
+  # Upload type provided by GraphQLUpload.js
+  scalar Upload
+
+  # File type for handling file uploads
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+  }
 
   type Institute {
     _id: Int!
@@ -107,7 +118,7 @@ const typeDefs = gql`
   }
 
   type Member {
-    _id: ID!
+    _id: Int!
     image: String!
     name: String!
     role: String!
@@ -156,7 +167,7 @@ const typeDefs = gql`
     allowedEmails(emailDomain:String offset:Int limit:Int): [AllowedEmail]!
     ads(title:String offset:Int limit:Int): [Ad]!
     faqs(title:String offset:Int limit:Int): [Faq]!
-    members: [Member]!
+    members(name:String offset:Int limit:Int): [Member]!
     aboutUs: AboutUs!
     loggedAdmin: LoggedAdmin!
     loggedUser: LoggedUser!
@@ -188,6 +199,10 @@ const typeDefs = gql`
     newBlog(title:String! content:String! tags:[String]): Blog!
     updateBlog(_id:Int! title:String content:String tags:[String]): Blog!
     deleteBlog(_id:Int!): ID!
+    # Team member's image is uploaded as a file, but is sent to frontend in DataURI format
+    newMember(image:Upload! name:String! role:String! facebookLink:String! instagramLink:String! linkedinLink:String!): Member!
+    updateMember(_id:Int! image:Upload name:String role:String facebookLink:String instagramLink:String linkedinLink:String): Member!
+    deleteMember(_id:Int!): ID!
   }
 
 `;

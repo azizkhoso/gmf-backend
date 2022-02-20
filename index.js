@@ -5,6 +5,7 @@
 import dotenv from 'dotenv';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+import { graphqlUploadExpress } from 'graphql-upload';
 import express from 'express';
 import cors from 'cors';
 import http from 'http';
@@ -30,8 +31,11 @@ const secret = process.env.JWT_SECRET;
 
 async function startApolloServer() {
   const app = express();
+  // This is for serving images of team members
+  app.use('/', express.static('uploads/'));
   app.use(express.json({ limit: '10mb' }));
   app.use(cors());
+  app.use(graphqlUploadExpress()); // Middleware for handling file uploads with graphql
   // app.use('/utilities', utilitesRouter);
   app.get('/verifyemail', emailVerification);
   app.post('/contact', handleContactUs);

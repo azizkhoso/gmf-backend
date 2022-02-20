@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/extensions */
 import { GraphQLScalarType } from 'graphql';
+import { GraphQLUpload } from 'graphql-upload';
 
 import institute from './institute.js';
 import faculty from './faculty.js';
@@ -40,7 +41,9 @@ const resolvers = {
     ...allowedEmail.mutationResolvers,
     ...faq.mutationResolvers,
     ...blog.mutationResolvers,
+    ...teamMember.mutationResolvers,
   },
+  Upload: GraphQLUpload, // For handling file uploads
   Date: new GraphQLScalarType({
     name: 'Date',
     description: 'A valid JavaScript Date object',
