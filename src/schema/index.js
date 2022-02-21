@@ -165,7 +165,7 @@ const typeDefs = gql`
     admins(name:String offset:Int limit:Int): [Admin]!
     blogs(title:String offset:Int limit:Int): [Blog]!
     allowedEmails(emailDomain:String offset:Int limit:Int): [AllowedEmail]!
-    ads(title:String offset:Int limit:Int): [Ad]!
+    ads(title:String locationId:String offset:Int limit:Int): [Ad]!
     faqs(title:String offset:Int limit:Int): [Faq]!
     members(name:String offset:Int limit:Int): [Member]!
     aboutUs: AboutUs!

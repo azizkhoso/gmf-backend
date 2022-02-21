@@ -1,6 +1,7 @@
 node_modules
 uploads
 .env
+*.mongodb
 aboutUs.txt
 yarn.lock
 yarn-error.log

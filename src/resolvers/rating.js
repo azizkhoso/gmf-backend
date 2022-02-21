@@ -29,11 +29,15 @@ const ratings = async (parent, args) => {
     query.where('createdAt').gt(startDate).lt(endDate);
   }
   // user filter
-  if (args.user) {
+  // comparing to zero deliberately because
+  // Boolean(0) resolves to false and user with id zero is not matched
+  if (args.user || args.user === 0) {
     query.where('user').equals(args.user);
   }
   // faculty filter
-  if (args.faculty) {
+  // comparing to zero deliberately because
+  // Boolean(0) resolves to false and faculty with id zero is not matched
+  if (args.faculty || args.faculty === 0) {
     query.where('faculty').equals(args.faculty);
   }
   // offset filter

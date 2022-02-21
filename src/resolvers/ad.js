@@ -27,6 +27,10 @@ const ads = async (parent, args) => {
   if (args.title) {
     query.where({ title: { $regex: new RegExp(args.title, 'ig') } }); // ig represent case-insensitive and globally in full string
   }
+  // locationId filter
+  if (args.locationId) {
+    query.where({ locationId: { $regex: new RegExp(args.locationId, 'ig') } }); // ig represent case-insensitive and globally in full string
+  }
   // offset filter
   if (args.offset) {
     query.skip(args.offset);

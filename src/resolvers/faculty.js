@@ -39,7 +39,9 @@ const faculties = async (parent, args) => {
     query.where({ firstName: { $regex: new RegExp(args.firstName, 'ig') } }); // ig represent case-insensitive and globally in full string
   }
   // institute filter
-  if (args.institute) {
+  // comparing to zero deliberately because
+  // Boolean(0) resolves to false and institute with id zero is not matched
+  if (args.institute || args.institute === 0) {
     query.where({ institute: args.institute });
   }
   // offset filter
