@@ -3,7 +3,6 @@
 import mongoose from 'mongoose';
 import autoIncrement from 'mongoose-auto-increment';
 import db from '../db/index.js';
-import Faculty from './Faculty.js';
 
 autoIncrement.initialize(db);
 
@@ -86,12 +85,7 @@ const RatingSchema = mongoose.Schema({
     default: [],
   },
 });
-RatingSchema.post('save', async (doc, next) => {
-  const faculty = await Faculty.findById(Number(doc.faculty));
-  const attributes = new Set([...faculty.attributes, ...doc.tags]);
-  await Faculty.updateOne({ _id: faculty._id }, { $set: { attributes: [...attributes] } });
-  next();
-});
+
 RatingSchema.plugin(autoIncrement.plugin, 'Rating');
 const Rating = mongoose.model('Rating', RatingSchema);
 

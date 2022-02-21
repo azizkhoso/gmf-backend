@@ -45,7 +45,10 @@ const UserSchema = new mongoose.Schema({
     default: new Date(),
   },
   ratings: {
-    type: [mongoose.Types.ObjectId],
+    type: [{
+      type: Number,
+      ref: 'Rating',
+    }],
     default: [],
   },
   confirmationCode: {

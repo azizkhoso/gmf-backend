@@ -27,6 +27,10 @@ const faqs = async (parent, args) => {
   if (args.title) {
     query.where({ title: { $regex: new RegExp(args.title, 'ig') } }); // ig represent case-insensitive and globally in full string
   }
+  // category filter
+  if (args.category) {
+    query.where({ category: { $regex: new RegExp(args.category, 'ig') } }); // ig represent case-insensitive and globally in full string
+  }
   // offset filter
   if (args.offset) {
     query.skip(args.offset);

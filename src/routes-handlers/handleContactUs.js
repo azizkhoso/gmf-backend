@@ -14,6 +14,7 @@ async function handleContactUs(req, res) {
       // eslint-disable-next-line quotes
       html: `
         <h1>Hello Team Grade My Faculty!</h1>
+        <h6><strong>Sent by: ${email} </strong><h6>
         <p>${message}</p>
       `,
     });

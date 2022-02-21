@@ -33,8 +33,7 @@ const allMembers = async () => {
   return result;
 };
 
-const members = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+const members = async (parent, args) => {
   const query = TeamMember.find();
   // name filter; Member whose name starts with or contains name given in arguments
   if (args.name) {

@@ -42,6 +42,7 @@ const resolvers = {
     ...faq.mutationResolvers,
     ...blog.mutationResolvers,
     ...teamMember.mutationResolvers,
+    ...rating.mutationResolvers,
   },
   Upload: GraphQLUpload, // For handling file uploads
   Date: new GraphQLScalarType({

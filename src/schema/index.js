@@ -166,7 +166,7 @@ const typeDefs = gql`
     blogs(title:String offset:Int limit:Int): [Blog]!
     allowedEmails(emailDomain:String offset:Int limit:Int): [AllowedEmail]!
     ads(title:String locationId:String offset:Int limit:Int): [Ad]!
-    faqs(title:String offset:Int limit:Int): [Faq]!
+    faqs(title:String category:String offset:Int limit:Int): [Faq]!
     members(name:String offset:Int limit:Int): [Member]!
     aboutUs: AboutUs!
     loggedAdmin: LoggedAdmin!
@@ -203,6 +203,11 @@ const typeDefs = gql`
     newMember(image:Upload! name:String! role:String! facebookLink:String! instagramLink:String! linkedinLink:String!): Member!
     updateMember(_id:Int! image:Upload name:String role:String facebookLink:String instagramLink:String linkedinLink:String): Member!
     deleteMember(_id:Int!): ID!
+    newRating(faculty:Int! course:String! levelOfDifficulty:Int! gradeOfUser:String! isAttendanceMandatory:Boolean! overAllRating:Int! semester:String! tags:[String]! thoughts:String! wouldTakeAgain:Boolean!): Rating!
+    addLike(rating:Int!): Int!
+    addDisLike(rating:Int!): Int!
+    saveFaculty(faculty:Int!): [Int]!
+    newReport(rating:Int! summary:String! details:String!): Report!
   }
 
 `;

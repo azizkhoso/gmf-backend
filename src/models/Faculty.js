@@ -33,7 +33,10 @@ const FacultySchema = new mongoose.Schema({
     required: true,
   },
   ratings: {
-    type: [Number],
+    type: [{
+      type: Number,
+      ref: 'Rating',
+    }],
     default: [],
   },
   levelOfDifficulty: {
