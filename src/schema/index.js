@@ -41,7 +41,7 @@ const typeDefs = gql`
     firstName: String!
     lastName: String!
     email: String!
-    institute: Institute!
+    institute: String!
     savedFaculties: [Faculty]!
     graduationYear: Int!
     registeredAt: Date!
@@ -157,11 +157,11 @@ const typeDefs = gql`
     allMembers: Int!
     institute(_id:Int!): Institute!
     institutes(name:String offset:Int limit:Int): [Institute]!
-    faculties(firstName:String institute:Int offset:Int limit:Int): [Faculty]!
+    faculties(firstName:String institute:Int offset:Int limit:Int in:[Int]): [Faculty]!
     users(firstName:String offset:Int limit:Int): [User]!
     user(email:String!): User!
-    ratings(date:Date user:Int faculty:Int offset:Int limit:Int): [Rating]!
-    reports: [Report]!
+    ratings(date:Date user:Int faculty:Int course:String semester:String offset:Int limit:Int): [Rating]!
+    reports(summary:String offset:Int limit:Int): [Report]!
     admins(name:String offset:Int limit:Int): [Admin]!
     blogs(title:String offset:Int limit:Int): [Blog]!
     allowedEmails(emailDomain:String offset:Int limit:Int): [AllowedEmail]!
@@ -176,7 +176,11 @@ const typeDefs = gql`
   type Mutation {
     newUser(firstName:String! lastName:String! email:String! password:String! confirmPassword:String!): User!
     adminUpdateUser(_id:Int! firstName:String lastName:String email:String password:String confirmPassword:String): User!
+    updateUser(firstName:String lastName:String institute:String graduationYear:Int): User!
+    updateUserEmail(email:String! password:String!): String!
+    updateUserPassword(oldPassword:String! newPassword:String!): Boolean!
     deleteUser(_id:Int!): ID!
+    deleteSelf: ID!
     newInstitute(name:String! email:String! courses:[String]!): Institute!
     updateInstitute(_id:Int! name:String email:String courses:[String]): Institute!
     deleteInstitute(_id:Int!): ID!
@@ -199,7 +203,6 @@ const typeDefs = gql`
     newBlog(title:String! content:String! tags:[String]): Blog!
     updateBlog(_id:Int! title:String content:String tags:[String]): Blog!
     deleteBlog(_id:Int!): ID!
-    # Team member's image is uploaded as a file, but is sent to frontend in DataURI format
     newMember(image:Upload! name:String! role:String! facebookLink:String! instagramLink:String! linkedinLink:String!): Member!
     updateMember(_id:Int! image:Upload name:String role:String facebookLink:String instagramLink:String linkedinLink:String): Member!
     deleteMember(_id:Int!): ID!

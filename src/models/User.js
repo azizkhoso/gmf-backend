@@ -24,9 +24,8 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   institute: {
-    type: Number,
-    ref: 'Institute',
-    default: -1,
+    type: String,
+    default: '',
   },
   savedFaculties: {
     type: [{

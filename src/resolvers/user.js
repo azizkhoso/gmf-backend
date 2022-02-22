@@ -9,7 +9,7 @@ import helperFunctions from './helperFunctions.js';
 
 const { institute, faculties, ratings } = helperFunctions;
 
-const newUserSchema = yup.object({
+const adminNewUserSchema = yup.object({
   firstName: yup.string().required('First name is required').min(2, 'Enter at least 2 characters for first name'),
   lastName: yup.string().required('Last name is required').min(2, 'Enter at least 2 characters for lastname'),
   email: yup.string().email('Enter a valid email').required('Email is required').min(2, 'Enter a valid email'),
@@ -17,12 +17,19 @@ const newUserSchema = yup.object({
   confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required('Confirm password is required'),
 });
 
-const updateUserSchema = yup.object({
+const adminUpdateUserSchema = yup.object({
   firstName: yup.string().min(2, 'Enter at least 2 characters for first name'),
   lastName: yup.string().min(2, 'Enter at least 2 characters for last name'),
   email: yup.string().email('Enter a valid email').min(2, 'Enter a valid email'),
   password: yup.string().min(8, 'Password should be at least 8 characters long'),
   confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+});
+
+const updateUserSchema = yup.object({
+  firstName: yup.string().min(2, 'Enter at least 2 characters for first name'),
+  lastName: yup.string().min(2, 'Enter at least 2 characters for last name'),
+  institute: yup.string().min(2, 'Enter at least 2 characters'),
+  graduationYear: yup.number().min((new Date()).getFullYear(), 'Enter valid value'),
 });
 
 // Resolvers
@@ -50,7 +57,6 @@ const users = async (parent, args) => { // This users is different from one in h
   if (!result) return [];
   return result.map((user) => ({
     ...user._doc,
-    institute: institute.bind(this, user._doc.institute),
     savedFaculties: faculties.bind(this, user._doc.savedFaculties),
     ratings: ratings.bind(this, user._doc.ratings),
   }));
@@ -72,7 +78,6 @@ const user = async (parent, args) => {
   if (!result || !result._doc) return nullUser;
   return {
     ...result._doc,
-    institute: institute.bind(this, result._doc.institute),
     savedFaculties: faculties.bind(this, result._doc.savedFaculties),
     ratings: ratings.bind(this, result._doc.ratings),
   };
@@ -85,7 +90,7 @@ const loggedUser = async (parent, args, context) => {
 };
 
 const newUser = async (parent, args) => {
-  await newUserSchema.validate(args); // On invalid inputs throws errors
+  await adminNewUserSchema.validate(args); // On invalid inputs throws errors
   const confirmationCode = (Math.random() * 10000).toFixed(0);
   const usr = {
     ...args,
@@ -118,12 +123,16 @@ const newUser = async (parent, args) => {
       </a>
     `,
   });
-  return result;
+  return {
+    ...result._doc,
+    savedFaculties: faculties.bind(this, result._doc.savedFaculties),
+    ratings: ratings.bind(this, result._doc.ratings),
+  };
 };
 
 const adminUpdateUser = async (parent, args, context) => {
   if (!context.admin) throw new Error('Not logged in, please login first');
-  await updateUserSchema.validate(args); // On invalid inputs throws errors
+  await adminUpdateUserSchema.validate(args); // On invalid inputs throws errors
   const usr = (await User.findOne({ _id: args._id }))._doc;
   const update = {
     ...usr,
@@ -154,12 +163,16 @@ const adminUpdateUser = async (parent, args, context) => {
         html: `
           <h1>Hello ${usr.firstName}!</h1>
           <p>Thank you for registering in Grade My Faculty.</p>
-          <a href="https://grade-my-faculty-backend.herokuapp.com/verifyemail?email=${args.email}&confirmationCode=${confirmationCode}">
+          <a href="${process.env.SERVER_URL}/verifyemail?email=${args.email}&confirmationCode=${confirmationCode}">
             Click here to verify your email
           </a>
         `,
       });
-      return result;
+      return {
+        ...result._doc,
+        savedFaculties: faculties.bind(this, result._doc.savedFaculties),
+        ratings: ratings.bind(this, result._doc.ratings),
+      };
     } catch (e) {
       if (e.code === 11000) throw new Error('Email already exists');
       else throw e;
@@ -170,10 +183,66 @@ const adminUpdateUser = async (parent, args, context) => {
   return result;
 };
 
+const updateUser = async (parent, args, context) => {
+  if (!context.user) throw new Error('Not logged in, please login first');
+  await updateUserSchema.validate(args); // throws errors on invalid inputs
+  const usr = await User.findOneAndUpdate({ _id: context._id }, args, { new: true });
+  return {
+    ...usr._doc,
+    savedFaculties: faculties.bind(this, usr._doc.savedFaculties),
+    ratings: ratings.bind(this, usr._doc.ratings),
+  };
+};
+
+const updateUserEmail = async (parent, args, context) => {
+  if (!context.user) throw new Error('Not logged in, please login first');
+  const usr = await User.findOne({ _id: context._id });
+  if (args.email === usr.email) throw new Error('Please provide different email');
+  const allowedEmails = await AllowedEmail.find();
+  const foundEmail = allowedEmails.find((e) => e.emailDomain === args.email.split('@')[1] && e.status === 'Active');
+  if (!foundEmail) throw new Error(`Provided '${args.email.split('@')[1]}' eamil domain is not allowed`);
+  if (!args.email.includes('@')) throw new Error('Enter a valid email');
+  if (usr.password !== args.password) throw new Error('Wrong password, please try again');
+  const confirmationCode = (Math.random() * 10000).toFixed(0);
+  await User.updateOne(
+    { _id: context._id },
+    { email: args.email, verified: false, confirmationCode },
+  );
+  await transport.sendMail({
+    from: process.env.GMAIL,
+    to: args.email,
+    subject: 'Email Verification',
+    // eslint-disable-next-line quotes
+    html: `
+      <h1>Hello ${usr.firstName}!</h1>
+      <p>You recently changed your email in Grade My Faculty.</p>
+      <a href="${process.env.SERVER_URL}/verifyemail?email=${args.email}&confirmationCode=${confirmationCode}">
+        Click here to verify your email
+      </a>
+    `,
+  });
+  return args.email;
+};
+
+const updateUserPassword = async (parent, args, context) => {
+  if (!context.user) throw new Error('Not logged in, please login first');
+  if (args.oldPassword.length < 8 || args.newPassword.length < 8) throw new Error('Passwords should be at least 8 characters long');
+  const ursr = await User.findOne({ _id: context._id });
+  if (ursr.password !== args.oldPassword) throw new Error('Wrong old password, please try again');
+  await User.findOneAndUpdate({ _id: context._id }, { password: args.newPassword });
+  return true;
+};
+
 const deleteUser = async (parent, args, context) => {
-  if (!context.user && !context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in, please login first');
   await User.deleteOne({ _id: args._id });
   return args._id;
+};
+
+const deleteSelf = async (parent, args, context) => {
+  if (!context.user) throw new Error('Not logged in, please login first');
+  await User.deleteOne({ _id: context._id });
+  return context._id;
 };
 
 export default {
@@ -186,6 +255,10 @@ export default {
   mutationResolvers: {
     newUser,
     adminUpdateUser,
+    updateUser,
+    updateUserEmail,
+    updateUserPassword,
     deleteUser,
+    deleteSelf,
   },
 };

@@ -51,6 +51,14 @@ const ratings = async (parent, args) => {
   if (args.faculty || args.faculty === 0) {
     query.where('faculty').equals(args.faculty);
   }
+  // course filter
+  if (args.course) {
+    query.where('course').equals(args.course.toUpperCase());
+  }
+  // semester filter
+  if (args.semester) {
+    query.where({ semester: { $regex: new RegExp(args.semester, 'ig') } }); // ig represent case-insensitive and globally in full string
+  }
   // offset filter
   if (args.offset) {
     query.skip(args.offset);

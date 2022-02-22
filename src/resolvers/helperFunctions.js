@@ -77,7 +77,7 @@ const user = async (userId) => {
     firstName: 'N/A',
     lastName: 'N/A',
     email: 'N/A',
-    institute: institute.bind(this, -1),
+    institute: 'N/A',
     savedFaculties: [],
     graduationYear: -1,
     registeredAt: new Date(),
@@ -90,7 +90,6 @@ const user = async (userId) => {
   }
   return {
     ...usr._doc,
-    institute: institute.bind(this, usr._doc.institute),
     savedFaculties: faculties.bind(this, usr._doc.savedFaculties),
     ratings: ratings.bind(this, usr._doc.ratings),
   };
@@ -101,7 +100,6 @@ const users = async (userIds) => {
   if (!usrs) return [];
   return usrs.map((u) => ({
     ...u._doc,
-    institute: institute.bind(this, u._doc.institute),
     savedFaculties: faculties.bind(this, u._doc.savedFaculties),
     ratings: ratings.bind(this, u._doc.ratings),
   }));

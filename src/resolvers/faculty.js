@@ -44,6 +44,10 @@ const faculties = async (parent, args) => {
   if (args.institute || args.institute === 0) {
     query.where({ institute: args.institute });
   }
+  // 'in' filter
+  if (args.in) {
+    query.where('_id').in(args.in);
+  }
   // offset filter
   if (args.offset) {
     query.skip(args.offset);
