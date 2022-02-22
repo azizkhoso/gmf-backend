@@ -46,7 +46,7 @@ const ads = async (parent, args) => {
 };
 
 const newAd = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await newAdSchema.validate(args); // throws errors on invalid inputs
   const foundAd = await Ad.findOne({ title: { $regex: new RegExp(`^${args.title.toLowerCase()}`, 'i') } });
   if (foundAd) {
@@ -63,7 +63,7 @@ const newAd = async (parent, args, context) => {
 };
 
 const updateAd = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await updateAdSchema.validate(args); // throws errors on invalid inputs
   const foundAd = await Ad.findById(args._id);
   if (!foundAd || !foundAd._doc) throw new Error('Ad not found');
@@ -83,7 +83,7 @@ const updateAd = async (parent, args, context) => {
 };
 
 const deleteAd = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await Ad.deleteOne({ _id: args._id });
   return args._id;
 };

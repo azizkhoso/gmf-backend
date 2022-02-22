@@ -53,7 +53,7 @@ const members = async (parent, args) => {
 };
 
 const newMember = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await newMemberSchema.validate(args); // throws errors on invalid inputs
   const { createReadStream, filename } = await args.image;
   const stream = createReadStream();
@@ -74,7 +74,7 @@ const newMember = async (parent, args, context) => {
 };
 
 const updateMember = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await updateMemberSchema.validate(args); // throws errors on invalid inputs
   const foundMem = await TeamMember.findById(args._id);
   if (!foundMem || !foundMem._doc) throw new Error('Member not found');
@@ -101,7 +101,7 @@ const updateMember = async (parent, args, context) => {
 };
 
 const deleteMember = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   const foundMem = await TeamMember.findById(args._id);
   if (!foundMem || !foundMem._doc) throw new Error('Member not found');
   await TeamMember.deleteOne({ _id: args._id });

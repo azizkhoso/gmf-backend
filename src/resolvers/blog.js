@@ -48,7 +48,7 @@ const blogs = async (parent, args) => { // This blogs is different from one in h
 };
 
 const newBlog = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await newBlogSchema.validate(args); // throws errors on invalid inputs
   const foundBlog = await Blog.findOne({ title: { $regex: new RegExp(`^${args.title.toLowerCase()}`, 'i') } });
   if (foundBlog) throw new Error('Blog already exists');
@@ -70,7 +70,7 @@ const newBlog = async (parent, args, context) => {
 };
 
 const updateBlog = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await updateBlogSchema.validate(args); // throws errors on invalid inputs
   // load as minimal data as possible
   const foundBlog = await Blog.findById(args._id, { _id: 1, title: 1 });
@@ -92,7 +92,7 @@ const updateBlog = async (parent, args, context) => {
 };
 
 const deleteBlog = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   const blg = await Blog.findById(args._id);
   if (!blg || !blg._doc) throw new Error('Blog not found');
   await Admin.findOneAndUpdate({ _id: blg._doc.writtenBy }, { $pull: { blogs: args._id } });

@@ -34,7 +34,7 @@ const institute = async (parent, args, context) => {
     createdAt: new Date(),
     faculties: [],
   };
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   if (args._id === -1) return nullInstitute;
   const result = await Institute.findById(args._id);
   if (!result || !result._doc) {
@@ -67,7 +67,7 @@ const institutes = async (parent, args) => {
 };
 
 const newInstitute = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await instituteSchema.validate(args); // Throws errors on invalid values
   let result;
   try {
@@ -83,7 +83,7 @@ const newInstitute = async (parent, args, context) => {
 };
 
 const updateInstitute = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await updateInstituteSchema.validate(args); // Throws errors on invalid values
   const oldInst = (await Institute.findById(args._id))?._doc;
   if (!oldInst) throw new Error('Institute not found');
@@ -102,7 +102,7 @@ const updateInstitute = async (parent, args, context) => {
 };
 
 const deleteInstitute = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await Institute.deleteOne({ _id: args._id });
   return args._id;
 };

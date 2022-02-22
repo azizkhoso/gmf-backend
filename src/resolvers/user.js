@@ -131,7 +131,7 @@ const newUser = async (parent, args) => {
 };
 
 const adminUpdateUser = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await adminUpdateUserSchema.validate(args); // On invalid inputs throws errors
   const usr = (await User.findOne({ _id: args._id }))._doc;
   const update = {
@@ -184,7 +184,7 @@ const adminUpdateUser = async (parent, args, context) => {
 };
 
 const updateUser = async (parent, args, context) => {
-  if (!context.user) throw new Error('Not logged in, please login first');
+  if (!context.user) throw new Error('Not logged in or session expired, please login');
   await updateUserSchema.validate(args); // throws errors on invalid inputs
   const usr = await User.findOneAndUpdate({ _id: context._id }, args, { new: true });
   return {
@@ -195,7 +195,7 @@ const updateUser = async (parent, args, context) => {
 };
 
 const updateUserEmail = async (parent, args, context) => {
-  if (!context.user) throw new Error('Not logged in, please login first');
+  if (!context.user) throw new Error('Not logged in or session expired, please login');
   const usr = await User.findOne({ _id: context._id });
   if (args.email === usr.email) throw new Error('Please provide different email');
   const allowedEmails = await AllowedEmail.find();
@@ -225,7 +225,7 @@ const updateUserEmail = async (parent, args, context) => {
 };
 
 const updateUserPassword = async (parent, args, context) => {
-  if (!context.user) throw new Error('Not logged in, please login first');
+  if (!context.user) throw new Error('Not logged in or session expired, please login');
   if (args.oldPassword.length < 8 || args.newPassword.length < 8) throw new Error('Passwords should be at least 8 characters long');
   const ursr = await User.findOne({ _id: context._id });
   if (ursr.password !== args.oldPassword) throw new Error('Wrong old password, please try again');
@@ -234,13 +234,13 @@ const updateUserPassword = async (parent, args, context) => {
 };
 
 const deleteUser = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await User.deleteOne({ _id: args._id });
   return args._id;
 };
 
 const deleteSelf = async (parent, args, context) => {
-  if (!context.user) throw new Error('Not logged in, please login first');
+  if (!context.user) throw new Error('Not logged in or session expired, please login');
   await User.deleteOne({ _id: context._id });
   return context._id;
 };

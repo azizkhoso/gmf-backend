@@ -9,7 +9,7 @@ const aboutUs = () => {
 };
 
 const updateAboutUs = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   let aboutus;
   try {
     aboutus = JSON.parse(fs.readFileSync('aboutUs.txt'));

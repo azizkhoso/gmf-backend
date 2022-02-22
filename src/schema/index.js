@@ -209,8 +209,11 @@ const typeDefs = gql`
     newRating(faculty:Int! course:String! levelOfDifficulty:Int! gradeOfUser:String! isAttendanceMandatory:Boolean! overAllRating:Int! semester:String! tags:[String]! thoughts:String! wouldTakeAgain:Boolean!): Rating!
     addLike(rating:Int!): Int!
     addDisLike(rating:Int!): Int!
+    adminDeleteRating(_id:Int!): ID!
+    deleteRating(_id:Int!): ID!
     saveFaculty(faculty:Int!): [Int]!
     newReport(rating:Int! summary:String! details:String!): Report!
+    deleteReport(_id:Int!): ID!
   }
 
 `;

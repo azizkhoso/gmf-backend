@@ -46,7 +46,7 @@ const faqs = async (parent, args) => {
 };
 
 const newFaq = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await newFaqSchema.validate(args); // throws errors on invalid inputs
   const foundFaq = await Faq.findOne({ title: { $regex: new RegExp(`^${args.title.toLowerCase()}`, 'i') } });
   if (foundFaq) throw new Error('Faq already exists');
@@ -61,7 +61,7 @@ const newFaq = async (parent, args, context) => {
 };
 
 const updateFaq = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await updateFaqSchema.validate(args);
   const foundFaq = await Faq.findById(args._id);
   if (!foundFaq || !foundFaq._doc) throw new Error('Faq not found');
@@ -79,7 +79,7 @@ const updateFaq = async (parent, args, context) => {
 };
 
 const deleteFaq = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await Faq.deleteOne({ _id: args._id });
   return args._id;
 };

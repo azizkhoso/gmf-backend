@@ -36,7 +36,7 @@ const allAdmins = async () => {
 };
 // This admins is different from one in helperFunctions.js
 const admins = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   const query = Admin.find();
   // name filter; admin whose name starts with name given in arguments
   if (args.name) {
@@ -66,7 +66,7 @@ const loggedAdmin = async (parent, args, context) => {
 };
 
 const newAdmin = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   const admin = args;
   await adminSchema.validate(admin); // throws errors on invalid inputs
   let result;
@@ -80,7 +80,7 @@ const newAdmin = async (parent, args, context) => {
 };
 
 const updateAdmin = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await updateAdminSchema.validate(args); // throws errors on invalid inputs
   const admin = await Admin.findOne({ _id: args._id });
   if (!admin || !admin._doc) throw new Error('Admin not found');
@@ -107,7 +107,7 @@ const updateAdmin = async (parent, args, context) => {
 };
 
 const deleteAdmin = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   const count = await Admin.count();
   if (count === 1) {
     // There should be at least one admin

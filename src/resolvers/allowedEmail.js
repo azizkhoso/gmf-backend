@@ -9,7 +9,7 @@ const allAllowedEmails = async () => {
 };
 
 const allowedEmails = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   const query = AllowedEmail.find();
   // name filter; institute whose name starts with name given in arguments
   if (args.emailDomain) {
@@ -30,7 +30,7 @@ const allowedEmails = async (parent, args, context) => {
 };
 
 const newAllowedEmail = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   const foundEmail = await AllowedEmail.findOne({ emailDomain: { $regex: new RegExp(`^${args.emailDomain.toLowerCase()}`, 'i') } });
   if (foundEmail) throw new Error('Email domain already exists');
   let result;
@@ -44,7 +44,7 @@ const newAllowedEmail = async (parent, args, context) => {
 };
 
 const updateAllowedEmail = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   const foundEmail = await AllowedEmail.findById(args._id);
   if (!foundEmail || !foundEmail._doc) throw new Error('Email not found');
   // If emailDomain is supplied in args, check if that already exists with different id
@@ -61,7 +61,7 @@ const updateAllowedEmail = async (parent, args, context) => {
 };
 
 const deleteEmail = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await AllowedEmail.deleteOne({ _id: args._id });
   return args._id;
 };

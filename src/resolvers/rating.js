@@ -1,9 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/extensions */
-import yup from 'yup';
 import Faculty from '../models/Faculty.js';
 import Rating from '../models/Rating.js';
-import Report from '../models/Report.js';
 import User from '../models/User.js';
 
 import helperFunctions from './helperFunctions.js';
@@ -13,14 +11,7 @@ const {
   faculty,
   users,
   reports,
-  rating: ratng,
 } = helperFunctions;
-
-const newReportSchema = yup.object({
-  rating: yup.number().min(0, 'Enter a valid rating id').required('Rating id is required'),
-  summary: yup.string().min(4, 'Enter at least 4 characters').required('Summary is required'),
-  details: yup.string().min(30, 'Enter at least 30 characters').required('Details is required'),
-});
 
 // Resolvers
 const allRatings = async () => {
@@ -81,7 +72,7 @@ const ratings = async (parent, args) => {
 };
 
 const newRating = async (parent, args, context) => {
-  if (!context.user) throw new Error('Not logged in, please login first');
+  if (!context.user) throw new Error('Not logged in or session expired, please login');
   const foundRating = await Rating.findOne(
     {
       user: context._id,
@@ -117,7 +108,7 @@ const newRating = async (parent, args, context) => {
 };
 
 const addLike = async (parent, args, context) => {
-  if (!context.user) throw new Error('Not logged in, please login first');
+  if (!context.user) throw new Error('Not logged in or session expired, please login');
   const rating = await Rating.findOne({ _id: args.rating });
   if (!rating || !rating._doc) throw new Error('Rating not found');
   if (rating.likes.includes(context._id)) {
@@ -137,7 +128,7 @@ const addLike = async (parent, args, context) => {
 };
 
 const addDisLike = async (parent, args, context) => {
-  if (!context.user) throw new Error('Not logged in, please login first');
+  if (!context.user) throw new Error('Not logged in or session expired, please login');
   const rating = await Rating.findOne({ _id: args.rating });
   if (!rating || !rating._doc) throw new Error('Rating not found');
   if (rating.disLikes.includes(context._id)) {
@@ -157,7 +148,7 @@ const addDisLike = async (parent, args, context) => {
 };
 
 const saveFaculty = async (parent, args, context) => {
-  if (!context.user) throw new Error('Not logged in, please login first');
+  if (!context.user) throw new Error('Not logged in or session expired, please login');
   const usr = await User.findOne({ _id: context._id });
   if (usr.savedFaculties.includes(args.faculty)) {
     const updated = await User.findOneAndUpdate({ _id: context._id }, {
@@ -171,18 +162,21 @@ const saveFaculty = async (parent, args, context) => {
   return updated.savedFaculties;
 };
 
-const newReport = async (parent, args, context) => {
-  if (!context.user) throw new Error('Not logged in, please login first');
-  await newReportSchema.validate(args);
-  const found = await Report.findOne({ user: context._id, rating: args.rating });
-  if (found) throw new Error('Already reported on this rating');
-  const report = await Report.create({ ...args, user: context._id });
-  // Update the reports list in concerned rating
-  await Rating.findOneAndUpdate({ _id: args.rating }, { $push: { reports: report._doc._id } });
-  return {
-    ...report._doc,
-    rating: ratng.bind(this, args.rating),
-  };
+const adminDeleteRating = async (parent, args, context) => {
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
+  await Rating.deleteOne({ _id: args._id });
+  return args._id;
+};
+
+const deleteRating = async (parent, args, context) => {
+  if (!context.user) throw new Error('Not logged in or session expired, please login');
+  const ratng = await Rating.findOne({ user: context._id, _id: args._id });
+  // Check if the rating is given by the user who is deleting it
+  if (ratng && ratng._doc) {
+    await User.updateOne({ _id: context._id }, { $pull: { ratings: args._id } });
+    await Rating.deleteOne({ _id: args._id });
+  } else throw new Error('Rating not found in your account');
+  return args._id;
 };
 
 export default {
@@ -195,6 +189,7 @@ export default {
     addLike,
     addDisLike,
     saveFaculty,
-    newReport,
+    adminDeleteRating,
+    deleteRating,
   },
 };

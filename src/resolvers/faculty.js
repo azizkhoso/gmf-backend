@@ -67,7 +67,7 @@ const faculties = async (parent, args) => {
 };
 
 const newFaculty = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await newFacultySchema.validate(args);
   const instResult = await Institute.findById(args.institute);
   if (!instResult || !instResult._doc) throw new Error('Institute not found');
@@ -88,7 +88,7 @@ const newFaculty = async (parent, args, context) => {
 };
 
 const updateFaculty = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await updateFacultySchema.validate(args);
   const facResult = await Faculty.findById(args._id);
   if (!facResult || !facResult._doc) throw new Error('Faculty not found');
@@ -122,7 +122,7 @@ const updateFaculty = async (parent, args, context) => {
 };
 
 const deleteFaculty = async (parent, args, context) => {
-  if (!context.admin) throw new Error('Not logged in, please login first');
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
   const fac = await Faculty.findById(args._id);
   if (!fac || !fac._doc) throw new Error('Faculty not found');
   await Institute.findOneAndUpdate({ _id: fac._doc.institute }, { $pull: { faculties: args._id } });
