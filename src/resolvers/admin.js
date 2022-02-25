@@ -82,6 +82,8 @@ const newAdmin = async (parent, args, context) => {
 const updateAdmin = async (parent, args, context) => {
   if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await updateAdminSchema.validate(args); // throws errors on invalid inputs
+  const superAdmin = await Admin.findOne({ email: 'superadmin@email.com' });
+  if (args._id === superAdmin._id) throw new Error('Can not update super admin');
   const admin = await Admin.findOne({ _id: args._id });
   if (!admin || !admin._doc) throw new Error('Admin not found');
   // To change password, old password should be correct
@@ -108,11 +110,8 @@ const updateAdmin = async (parent, args, context) => {
 
 const deleteAdmin = async (parent, args, context) => {
   if (!context.admin) throw new Error('Not logged in or session expired, please login');
-  const count = await Admin.count();
-  if (count === 1) {
-    // There should be at least one admin
-    throw new Error('Can not delete last remaining admin');
-  }
+  const superAdmin = await Admin.findOne({ email: 'superadmin@email.com' });
+  if (superAdmin._id === args._id) throw new Error('Can not delete super admin');
   const admin = await Admin.findById({ _id: args._id });
   if (!admin || !admin._doc) throw new Error('Admin not found');
   if (admin._doc._id === context._id) throw new Error('You can not delete yourselves');

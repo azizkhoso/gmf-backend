@@ -44,22 +44,22 @@ async function handleGoogleSignUp(req, res) {
       };
       const result = await User.create(user);
       try {
-        if (!user.verified) {
-          await transport.sendMail({
-            from: process.env.GMAIL,
-            to: user.email,
-            subject: 'Email Verification',
-            // eslint-disable-next-line quotes
-            html: `
-              <h1>Hello ${user.firstName}!</h1>
-              <p>Thank you for registering in Grade My Faculty.</p>
-              <p>We have setup a random password for you. It is '${user.password}'.</p>
+        await transport.sendMail({
+          from: process.env.GMAIL,
+          to: user.email,
+          subject: 'Email Verification',
+          // eslint-disable-next-line quotes
+          html: `
+            <h1>Hello ${user.firstName}!</h1>
+            <p>Thank you for registering in Grade My Faculty.</p>
+            <p>We have setup a random password for you. It is '${user.password}'.</p>
+            ${user.verified ? '' : `
               <a href="${process.env.SERVER_URL}/verifyemail?email=${user.email}&confirmationCode=${result.confirmationCode}">
-                Click here to verify your email
+              Click here to verify your email
               </a>
-            `,
-          });
-        }
+            `}
+          `,
+        });
         res.json({ user: result, token: null });
       } catch (e) {
         res.status(500).json({ error: e.message });

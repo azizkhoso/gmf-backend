@@ -1,12 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/extensions */
 import yup from 'yup';
+// import fs from 'fs';
+import csv from 'csvtojson';
 import Faculty from '../models/Faculty.js';
 import Institute from '../models/Institute.js';
 
 import helperFunctions from './helperFunctions.js';
 
-const { institute, ratings } = helperFunctions;
+const { institute, ratings, institute: inst } = helperFunctions;
 
 const newFacultySchema = yup.object({
   firstName: yup.string().required('First name is required').min(2, 'Enter at least 2 characters'),
@@ -87,6 +89,14 @@ const newFaculty = async (parent, args, context) => {
   };
 };
 
+const newFaculties = async (parent, args, context) => {
+  if (!context.admin) throw new Error('Not logged in or session expired, please login');
+  const { createReadStream } = await args.csvFile;
+  const jsonObj = await csv().fromStream(createReadStream());
+  console.log(jsonObj[0]);
+  return [inst(-1)];
+};
+
 const updateFaculty = async (parent, args, context) => {
   if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await updateFacultySchema.validate(args);
@@ -137,6 +147,7 @@ export default {
   },
   mutationResolvers: {
     newFaculty,
+    newFaculties,
     updateFaculty,
     deleteFaculty,
   },

@@ -185,6 +185,7 @@ const typeDefs = gql`
     updateInstitute(_id:Int! name:String email:String courses:[String]): Institute!
     deleteInstitute(_id:Int!): ID!
     newFaculty(firstName:String! lastName:String! email:String! institute:Int! department:String! courses:[String!]!): Faculty!
+    newFaculties(csvFile:Upload! institute:Int!): [Faculty]! 
     updateFaculty(_id:Int! firstName:String lastName:String email:String institute:Int department:String courses:[String]): Faculty!
     deleteFaculty(_id:Int!): ID!
     newAdmin(name:String! email:String! password:String! confirmPassword:String! facebookLink:String instagramLink:String twitterLink:String): Admin!
