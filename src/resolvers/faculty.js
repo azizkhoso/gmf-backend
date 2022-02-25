@@ -12,8 +12,8 @@ const { institute, ratings, institute: inst } = helperFunctions;
 
 const newFacultySchema = yup.object({
   firstName: yup.string().required('First name is required').min(2, 'Enter at least 2 characters'),
-  lastName: yup.string().required('Last name is required').min(2, 'Enter at least 2 characters'),
-  email: yup.string().email('Enter a valid email').required('Email is required'),
+  lastName: yup.string().min(2, 'Enter at least 2 characters'),
+  email: yup.string().email('Enter a valid email').min(2, 'Enter a valid email'),
   department: yup.string().required('Department is required').min(6, 'Enter at least 6 characters'),
   institute: yup.number().min(0, 'Enter a valid institute').required('Institute is required'),
   courses: yup.array().min(1, 'Enter at least 1 course').required('Courses are required'),
@@ -71,6 +71,14 @@ const faculties = async (parent, args) => {
 const newFaculty = async (parent, args, context) => {
   if (!context.admin) throw new Error('Not logged in or session expired, please login');
   await newFacultySchema.validate(args);
+  // find faculty having same first name, last name, department and institute in any regard
+  const query = Faculty.findOne(
+    {
+      firstName: { $regex: new RegExp(`^${args.firstName}$`, 'ig') }, // matching case insensitively
+    },
+  );
+  const foundFac = await query.exec();
+  if (foundFac && foundFac._doc) throw new Error('Faculty already exists');
   const instResult = await Institute.findById(args.institute);
   if (!instResult || !instResult._doc) throw new Error('Institute not found');
   let result;
