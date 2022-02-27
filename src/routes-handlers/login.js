@@ -39,7 +39,7 @@ async function adminLogin(req, res) {
       if (admin.password !== args.password) {
         return res.json({ error: true, message: 'Wrong password, please try again' });
       }
-      const token = jwt.sign(
+      const token = await jwt.sign(
         { admin: admin.email, _id: admin._id, role: 'admin' },
         secret,
         {
