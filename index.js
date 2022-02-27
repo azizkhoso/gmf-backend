@@ -18,6 +18,8 @@ import {
   userLogin,
   adminLogin,
   handleGoogleSignup,
+  handleNewFacultyReq,
+  handleNewInstituteReq,
   handleCodeConfirmation,
   handlePasswordReset,
   handleContactUs,
@@ -39,6 +41,8 @@ async function startApolloServer() {
   // app.use('/utilities', utilitesRouter);
   app.get('/verifyemail', emailVerification);
   app.post('/contact', handleContactUs);
+  app.post('/new-institute', handleNewInstituteReq);
+  app.post('/new-faculty', handleNewFacultyReq);
   app.post('/googleSignup', handleGoogleSignup);
   app.post('/adminlogin', adminLogin);
   app.post('/forgetPassword', generateConfirmationCode);

@@ -1,19 +1,20 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/extensions */
+/* eslint-disable no-promise-executor-return */
 import yup from 'yup';
-// import fs from 'fs';
-import csv from 'csvtojson';
+import fs from 'fs';
 import Faculty from '../models/Faculty.js';
 import Institute from '../models/Institute.js';
 
 import helperFunctions from './helperFunctions.js';
 
-const { institute, ratings, institute: inst } = helperFunctions;
+const { institute, ratings } = helperFunctions;
 
 const newFacultySchema = yup.object({
   firstName: yup.string().required('First name is required').min(2, 'Enter at least 2 characters'),
-  lastName: yup.string().min(2, 'Enter at least 2 characters'),
-  email: yup.string().email('Enter a valid email').min(2, 'Enter a valid email'),
+  lastName: yup.string(),
+  email: yup.string().email('Enter a valid email'),
   department: yup.string().required('Department is required').min(6, 'Enter at least 6 characters'),
   institute: yup.number().min(0, 'Enter a valid institute').required('Institute is required'),
   courses: yup.array().min(1, 'Enter at least 1 course').required('Courses are required'),
@@ -21,12 +22,24 @@ const newFacultySchema = yup.object({
 
 const updateFacultySchema = yup.object({
   firstName: yup.string().min(2, 'Enter at least 2 characters'),
-  lastName: yup.string().min(2, 'Enter at least 2 characters'),
-  email: yup.string().email('Enter a valid email').min(2, 'Enter a valid email'),
+  lastName: yup.string(),
+  email: yup.string().email('Enter a valid email'),
   department: yup.string().min(6, 'Enter at least 6 characters'),
   institute: yup.number().min(0, 'Enter a valid institute'),
   courses: yup.array().min(1, 'Enter at least 1 course'),
 });
+
+const storeFS = ({ stream }) => {
+  const pth = 'many-faculties.json';
+  return new Promise((resolve, reject) => stream
+    .on('error', (error) => {
+      reject(error);
+    })
+    .pipe(fs.createWriteStream(pth))
+    // eslint-disable-next-line arrow-parens
+    .on('error', error => reject(error))
+    .on('finish', () => resolve({ path: pth })));
+};
 
 // Resolvers
 const allFaculties = async () => {
@@ -74,7 +87,7 @@ const newFaculty = async (parent, args, context) => {
   // find faculty having same first name, last name, department and institute in any regard
   const query = Faculty.findOne(
     {
-      firstName: { $regex: new RegExp(`^${args.firstName}$`, 'ig') }, // matching case insensitively
+      firstName: args.firstName,
     },
   );
   const foundFac = await query.exec();
@@ -99,10 +112,31 @@ const newFaculty = async (parent, args, context) => {
 
 const newFaculties = async (parent, args, context) => {
   if (!context.admin) throw new Error('Not logged in or session expired, please login');
-  const { createReadStream } = await args.csvFile;
-  const jsonObj = await csv().fromStream(createReadStream());
-  console.log(jsonObj[0]);
-  return [inst(-1)];
+  if (!args.institute || args.institute === -1) throw new Error('Please enter institute');
+  const { createReadStream } = await args.jsonFile;
+  const stream = createReadStream();
+  const file = await storeFS({ stream });
+  const result = JSON.parse(fs.readFileSync(file.path).toString());
+  // Validating records
+  let i = 0;
+  const newFacs = [];
+  try {
+    for (; i < result.length; i += 1) {
+      const record = result[i];
+      await newFacultySchema.validate(record);
+      // Adding faculty to database
+      const rec = await Faculty.create({ ...record, institute: args.institute });
+      newFacs.push(rec);
+    }
+  } catch (e) {
+    if (e.code === 11000) throw new Error(`Faculty ${result[i].firstName} already exists, subsequent records could not be processed`);
+    else throw new Error(`For ${result[i].firstName}, ${e}, subsequent records could not be processed`);
+  }
+  return newFacs.map((fac) => ({
+    ...fac._doc,
+    institute: institute.bind(this, fac._doc.institute),
+    ratings: ratings.bind(this, fac._doc.ratings),
+  }));
 };
 
 const updateFaculty = async (parent, args, context) => {
@@ -129,7 +163,7 @@ const updateFaculty = async (parent, args, context) => {
       { new: true },
     );
   } catch (e) {
-    if (e.code === 11000) throw new Error('Email already exists');
+    if (e.code === 11000) throw new Error('Faculty already exists');
     else throw e;
   }
   return {

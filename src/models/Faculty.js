@@ -5,47 +5,50 @@ import db from '../db/index.js';
 
 autoIncrement.initialize(db);
 
-const FacultySchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  lastName: {
-    type: String,
-  },
-  email: {
-    type: String,
-  },
-  institute: {
-    type: Number,
-    ref: 'Institute',
-    required: true,
-  },
-  department: {
-    type: String,
-    required: true,
-  },
-  courses: {
-    type: [String],
-    required: true,
-  },
-  ratings: {
-    type: [{
+const FacultySchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    lastName: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    institute: {
       type: Number,
-      ref: 'Rating',
-    }],
-    default: [],
+      ref: 'Institute',
+      required: true,
+    },
+    department: {
+      type: String,
+      required: true,
+    },
+    courses: {
+      type: [String],
+      required: true,
+    },
+    ratings: {
+      type: [{
+        type: Number,
+        ref: 'Rating',
+      }],
+      default: [],
+    },
+    levelOfDifficulty: {
+      type: Number,
+      default: 0,
+    },
+    attributes: {
+      type: [String],
+      default: [],
+    },
   },
-  levelOfDifficulty: {
-    type: Number,
-    default: 0,
-  },
-  attributes: {
-    type: [String],
-    default: [],
-  },
-});
+  { collation: { locale: 'en', strength: 2 } }, // Collation for case insensitivity
+);
 
 FacultySchema.plugin(autoIncrement.plugin, 'Faculty');
 const Faculty = mongoose.model('Faculty', FacultySchema);

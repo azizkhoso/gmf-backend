@@ -5,6 +5,9 @@ import {
 } from './login.js';
 import handleGoogleSignup from './handleGoogleSignup.js';
 import handleContactUs from './handleContactUs.js';
+import handleNewInstituteReq from './handleNewInstituteReq.js';
+import handleNewFacultyReq from './handleNewFacultyReq.js';
+
 import {
   emailVerification,
   generateConfirmationCode,
@@ -16,6 +19,8 @@ export {
   adminLogin,
   userLogin,
   handleGoogleSignup,
+  handleNewFacultyReq,
+  handleNewInstituteReq,
   emailVerification,
   generateConfirmationCode,
   handleCodeConfirmation,

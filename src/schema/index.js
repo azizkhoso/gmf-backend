@@ -184,7 +184,7 @@ const typeDefs = gql`
     newInstitute(name:String! email:String! courses:[String]!): Institute!
     updateInstitute(_id:Int! name:String email:String courses:[String]): Institute!
     deleteInstitute(_id:Int!): ID!
-    newFaculties(csvFile:Upload! institute:Int!): [Faculty]! 
+    newFaculties(jsonFile:Upload! institute:Int!): [Faculty]! 
     newFaculty(firstName:String! lastName:String email:String institute:Int! department:String! courses:[String!]!): Faculty!
     updateFaculty(_id:Int! firstName:String lastName:String email:String institute:Int department:String courses:[String]): Faculty!
     deleteFaculty(_id:Int!): ID!
