@@ -85,9 +85,9 @@ const newRating = async (parent, args, context) => {
     throw new Error(`Already rated this faculty on ${args.course} in ${args.semester}`);
   }
   const fac = await Faculty.findById(args.faculty);
-  if (!fac || !fac._doc._id) throw new Error('Faculty not found');
+  if (!fac || !fac._doc) throw new Error('Faculty not found');
   const usr = await User.findById(context._id);
-  if (!usr || !usr._doc._id) throw new Error('User not found');
+  if (!usr || !usr._doc) throw new Error('User not found');
   // After passing all checks, creating rating record
   const rating = await Rating.create({ ...args, user: context._id });
   // Updating attribute of faculty and adding new rating in list
@@ -174,7 +174,27 @@ const deleteRating = async (parent, args, context) => {
   // Check if the rating is given by the user who is deleting it
   if (ratng && ratng._doc) {
     await User.updateOne({ _id: context._id }, { $pull: { ratings: args._id } });
+    const fac = await Faculty.findById({ _id: ratng.faculty });
+    if (fac && fac._doc) { // for null safety
+      await Faculty.updateOne({ _id: ratng.faculty }, { $pull: { ratings: args._id } });
+    }
     await Rating.deleteOne({ _id: args._id });
+    if (fac && fac._doc) { // for null safety
+      // Updating attributes of Faculty
+      // Removing current rating's attributes
+      await fac.updateOne({ $pull: { attributes: { $in: ratng.tags } } });
+      // Calculating new attributes
+      // getting attributes of all ratings of the faculty
+      const ratingsAndTags = await Rating.find(
+        { _id: { $in: fac._doc.ratings } },
+        { _id: 1, tags: 1 },
+      );
+      const overAllAttributes = new Set(); // Set automatically ignores duplicate values
+      ratingsAndTags.forEach((r) => {
+        r._doc.tags.forEach((t) => overAllAttributes.add(t));
+      });
+      fac.updateOne({ $set: { attributes: [...overAllAttributes] } });
+    }
   } else throw new Error('Rating not found in your account');
   return args._id;
 };

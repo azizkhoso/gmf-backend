@@ -36,7 +36,6 @@ const allAdmins = async () => {
 };
 // This admins is different from one in helperFunctions.js
 const admins = async (parent, args, context) => {
-  console.log(context);
   if (!context.admin) throw new Error('Not logged in or session expired, please login');
   const query = Admin.find();
   // name filter; admin whose name starts with name given in arguments
