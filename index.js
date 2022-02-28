@@ -58,9 +58,9 @@ async function startApolloServer() {
       let verifiedToken;
       const token = req.headers.authentication;
       try {
-        verifiedToken = jwt.verify(req.headers.authentication, secret);
+        verifiedToken = await jwt.verify(req.headers.authentication, secret);
       } catch (e) {
-        // console.log(e);
+        console.log(e);
       }
       return { ...verifiedToken, token };
     },
