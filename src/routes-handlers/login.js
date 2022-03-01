@@ -83,7 +83,9 @@ async function userLogin(req, res) {
       }
       const allowedEmails = await AllowedEmail.find({});
       const foundEmail = allowedEmails.find((e) => e.emailDomain === user.email.split('@')[1] && e.status === 'Active');
-      if (!foundEmail) throw new Error('User not allowed');
+      if (!foundEmail) {
+        return res.json({ error: true, message: 'User not allowed with provided email domain' });
+      }
       const token = jwt.sign(
         { user: user.email, _id: user._id, role: 'user' },
         secret,
