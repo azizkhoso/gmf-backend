@@ -21,8 +21,11 @@ const allAds = async () => {
   return result;
 };
 
-const ads = async (parent, args) => {
-  const query = Ad.find();
+const ads = async (parent, args, context) => {
+  let query;
+  if (context.admin) {
+    query = Ad.find({});
+  } else query = Ad.find({ status: 'Active' });
   // name filter; institute whose name starts with name given in arguments
   if (args.title) {
     query.where({ title: { $regex: new RegExp(args.title, 'ig') } }); // ig represent case-insensitive and globally in full string
