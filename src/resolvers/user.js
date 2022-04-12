@@ -6,6 +6,7 @@ import AllowedEmail from '../models/AllowedEmail.js';
 import transport from './transport.js';
 
 import helperFunctions from './helperFunctions.js';
+import verifyEmail from '../emailTemplates/verifyEmail.js';
 
 const { institute, faculties, ratings } = helperFunctions;
 
@@ -114,14 +115,7 @@ const newUser = async (parent, args) => {
     from: process.env.GMAIL,
     to: usr.email,
     subject: 'Email Verification',
-    // eslint-disable-next-line quotes
-    html: `
-      <h1>Hello ${usr.firstName}!</h1>
-      <p>Thank you for registering in Grade My Faculty.</p>
-      <a href="${process.env.SERVER_URL}/verifyemail?email=${usr.email}&confirmationCode=${confirmationCode}">
-        Click here to verify your email
-      </a>
-    `,
+    html: verifyEmail(usr.firstName, usr.email, result.confirmationCode),
   });
   return {
     ...result._doc,
@@ -160,13 +154,7 @@ const adminUpdateUser = async (parent, args, context) => {
         to: args.email,
         subject: 'Email Verification',
         // eslint-disable-next-line quotes
-        html: `
-          <h1>Hello ${usr.firstName}!</h1>
-          <p>Thank you for registering in Grade My Faculty.</p>
-          <a href="${process.env.SERVER_URL}/verifyemail?email=${args.email}&confirmationCode=${confirmationCode}">
-            Click here to verify your email
-          </a>
-        `,
+        html: verifyEmail(usr.firstName, args.email, confirmationCode),
       });
       return {
         ...result._doc,
@@ -213,13 +201,7 @@ const updateUserEmail = async (parent, args, context) => {
     to: args.email,
     subject: 'Email Verification',
     // eslint-disable-next-line quotes
-    html: `
-      <h1>Hello ${usr.firstName}!</h1>
-      <p>You recently changed your email in Grade My Faculty.</p>
-      <a href="${process.env.SERVER_URL}/verifyemail?email=${args.email}&confirmationCode=${confirmationCode}">
-        Click here to verify your email
-      </a>
-    `,
+    html: verifyEmail(usr.firstName, args.email, confirmationCode),
   });
   return args.email;
 };

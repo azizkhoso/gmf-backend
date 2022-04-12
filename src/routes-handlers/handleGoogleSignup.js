@@ -8,6 +8,8 @@ import jwt from 'jsonwebtoken';
 import AllowedEmail from '../models/AllowedEmail.js';
 import transport from '../resolvers/transport.js';
 import User from '../models/User.js';
+import verifyEmail from '../emailTemplates/verifyEmail.js';
+import thankyouEmail from '../emailTemplates/thankyouEmail.js';
 
 const secret = process.env.JWT_SECRET;
 const clientId = process.env.OAUTH_CLIENT;
@@ -24,8 +26,8 @@ async function googleAuth(id_token) {
 
 async function handleGoogleSignUp(req, res) {
   try {
-    const { tokenObj } = req.body;
-    if (!tokenObj) throw new Error('Invalid Google Signup');
+    const { tokenObj, error } = req.body;
+    if (!tokenObj) throw new Error(error || 'Invalid Google Signup');
     const {
       given_name,
       family_name,
@@ -47,18 +49,11 @@ async function handleGoogleSignUp(req, res) {
         await transport.sendMail({
           from: process.env.GMAIL,
           to: user.email,
-          subject: 'Email Verification',
+          subject: user.verified ? 'Welcome!' : 'Email Verification',
           // eslint-disable-next-line quotes
-          html: `
-            <h1>Hello ${user.firstName}!</h1>
-            <p>Thank you for registering in Grade My Faculty.</p>
-            <p>We have setup a random password for you. It is '${user.password}'.</p>
-            ${user.verified ? '' : `
-              <a href="${process.env.SERVER_URL}/verifyemail?email=${user.email}&confirmationCode=${result.confirmationCode}">
-              Click here to verify your email
-              </a>
-            `}
-          `,
+          html: user.verified
+            ? thankyouEmail(user.firstName)
+            : verifyEmail(user.firstName, user.email, result.confirmationCode),
         });
         res.json({ user: result, token: null });
       } catch (e) {

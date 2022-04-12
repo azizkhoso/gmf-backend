@@ -4,14 +4,27 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import Admin from '../models/Admin.js';
 import transport from '../resolvers/transport.js';
+import thankyouEmail from '../emailTemplates/thankyouEmail.js';
+import resetPassword from '../emailTemplates/resetPassword.js';
 
 const resetPasswordSecret = 'f85bb7ead1b2dffc34966e549edfca40980eb4ef5b49f4656d037a8901b86b857dc38859ee1af45019ddb3874cdefd7c8d5144520fba58e617ef24f375203e5';
 
 async function emailVerification(req, res) {
   const { query } = req;
-  const user = await User.findOneAndUpdate(query, { $set: { verified: true } }, { new: true });
-  if (!user) return res.json({ error: true, message: 'User not found with given confirmation code' });
-  return res.end(`Email ${user.email} verified in grade my faculty. Thank you.`);
+  const user = await User.findOneAndUpdate(
+    { ...query, confirmationCode: Number(query.confirmationCode) },
+    { $set: { verified: true } },
+    { new: true },
+  );
+  if (!user) return res.status(400).json({ error: 'Invalid verification link' });
+  await transport.sendMail({
+    from: process.env.GMAIL,
+    to: user.email,
+    subject: 'Welcome!',
+    // eslint-disable-next-line quotes
+    html: thankyouEmail(user.firstName),
+  });
+  return res.json({ verified: true, email: user.email });
 }
 
 async function generateConfirmationCode(req, res) {
@@ -43,10 +56,7 @@ async function generateConfirmationCode(req, res) {
         to: req.body.email,
         subject: 'Email Verification',
         // eslint-disable-next-line quotes
-        html: `
-          <h1>Hello ${user.firstName}!</h1>
-          <p>You recently requested for password change in Grade My Faculty. To change your password, your confirmation code is: ${confirmationCode}</p>
-        `,
+        html: resetPassword(confirmationCode, true),
       });
       res.end(`Confirmation code sent on email ${user.email}`);
     } catch (e) {
@@ -100,10 +110,7 @@ async function handleCodeConfirmation(req, res) {
         to: req.body.email,
         subject: 'Email Verification',
         // eslint-disable-next-line quotes
-        html: `
-          <h1>Hello ${user.firstName}!</h1>
-          <p>You recently entered wrong confirmation code for password change in Grade My Faculty. To change your password, your new code is: ${confirmationCode}</p>
-        `,
+        html: resetPassword(confirmationCode, false),
       });
       res.status(400).json({ error: 'Invalid confirmation code, new code sent' });
     } catch (e) {
