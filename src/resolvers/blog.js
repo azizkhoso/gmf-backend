@@ -25,7 +25,7 @@ const allBlogs = async () => {
 };
 
 const blogs = async (parent, args) => { // This blogs is different from one in helperFunctions.js
-  const query = Blog.find();
+  const query = Blog.find().sort('-createdAt');
   // name filter; institute whose name starts with name given in arguments
   if (args.title) {
     query.where({ title: { $regex: new RegExp(args.title, 'ig') } }); // ig represent case-insensitive and globally in full string
