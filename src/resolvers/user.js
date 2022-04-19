@@ -97,6 +97,7 @@ const newUser = async (parent, args) => {
     ...args,
     email: args.email,
     confirmationCode,
+    registeredAt: (new Date()).toISOString(),
   };
   const allowedEmails = await AllowedEmail.find(
     {},

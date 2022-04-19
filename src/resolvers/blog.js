@@ -56,7 +56,9 @@ const newBlog = async (parent, args, context) => {
   if (!foundAdmin || !foundAdmin._doc) throw new Error('Admin not found');
   let result;
   try {
-    result = await Blog.create({ ...args, writtenBy: context._id });
+    result = await Blog.create(
+      { ...args, writtenBy: context._id, createdAt: (new Date()).toISOString() },
+    );
     // New blog should be listed in admin
     await foundAdmin.updateOne({ $push: { blogs: result._doc._id } });
   } catch (e) {

@@ -79,6 +79,7 @@ const newRating = async (parent, args, context) => {
       course: args.course.toUpperCase(),
       semester: args.semester,
       faculty: args.faculty,
+      createdAt: (new Date()).toISOString(),
     },
   );
   if (foundRating) {

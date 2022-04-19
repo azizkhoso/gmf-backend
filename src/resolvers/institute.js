@@ -71,7 +71,7 @@ const newInstitute = async (parent, args, context) => {
   await instituteSchema.validate(args); // Throws errors on invalid values
   let result;
   try {
-    result = await Institute.create(args);
+    result = await Institute.create({ ...args, createdAt: (new Date()).toISOString() });
   } catch (e) {
     if (e.code === 11000) throw new Error('Email already exists');
     else throw e;
