@@ -58,23 +58,28 @@ export default function resetPassword(confirmationCode, isFirstAttempt) {
                 style="background-color: #fff; width: 100%; max-width: 680px; height: 100%;">
                 <tbody>
                   <tr>
+                    <td colspan="2" style="padding-top: 18px; padding-bottom: 18px; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: white; background-color: rgb(119, 120, 240); font-family: 'Postmates Std', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 32px; font-smoothing: always; font-style: normal; font-weight: 600; text-decoration: none;">
+                      GRADE MY FACULTY
+                    </td>
+                  </tr>
+                  <tr>
                     <td>
                       <table align="center" cellpadding="0" cellspacing="0" class="page-center"
                         style="text-align: left; padding-bottom: 88px; width: 100%; padding-left: 60px; padding-right: 60px;">
                         <tbody>
                           <tr>
-                            <td style="padding-top: 24px;">
-                              <img src="https://d1pgqke3goo8l6.cloudfront.net/wRMe5oiRRqYamUFBvXEw_logo.png"
-                                style="width: 56px;">
+                            <td style="padding-top: 24px; text-align: center;">
+                              <img src="https://www.grademyfaculty.com/person.svg"
+                                style="width: 50%; max-width: 250px;">
                             </td>
                           </tr>
                           <tr>
                             <td colspan="2"
-                              style="padding-top: 72px; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: rgb(119, 120, 240); font-family: 'Postmates Std', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 32px; font-smoothing: always; font-style: normal; font-weight: 600; letter-spacing: -2.6px; line-height: 52px; mso-line-height-rule: exactly; text-decoration: none;">
+                              style="padding-top: 28px; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: rgb(119, 120, 240); font-family: 'Postmates Std', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 32px; font-smoothing: always; font-style: normal; font-weight: 600; letter-spacing: -2.6px; line-height: 52px; mso-line-height-rule: exactly; text-decoration: none;">
                               Reset your password</td>
                           </tr>
                           <tr>
-                            <td style="padding-top: 48px; padding-bottom: 48px;">
+                            <td style="padding-top: 28px; padding-bottom: 28px;">
                               <table cellpadding="0" cellspacing="0" style="width: 100%">
                                 <tbody>
                                   <tr>
@@ -102,52 +107,17 @@ export default function resetPassword(confirmationCode, isFirstAttempt) {
                           <tr>
                             <td>
                               <div
-                                style="margin-top: 36px; -ms-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #ffffff; font-family: 'Postmates Std', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 28px; font-smoothing: always; font-style: normal; font-weight: 600; letter-spacing: 0.7px; line-height: 48px; mso-line-height-rule: exactly; text-decoration: none; vertical-align: top; min-width: 150px; background-color: #999; border-radius: 28px; display: block; text-align: center; text-transform: uppercase">
+                                style="margin-top: 36px; letter-spacing: 4px; -ms-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #ffffff; font-family: 'Postmates Std', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 28px; font-smoothing: always; font-style: normal; font-weight: 600; letter-spacing: 0.7px; line-height: 48px; mso-line-height-rule: exactly; text-decoration: none; vertical-align: top; min-width: 150px; background-color: #999; border-radius: 28px; display: block; text-align: center; text-transform: uppercase">
                                 ${confirmationCode}
                               </div>
                             </td>
                           </tr>
-                        </tbody>
-                      </table>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <table align="center" cellpadding="0" cellspacing="0" id="footer"
-                style="background-color: rgb(119, 120, 240); width: 100%; max-width: 680px; height: 100%;">
-                <tbody>
-                  <tr>
-                    <td>
-                      <table align="center" cellpadding="0" cellspacing="0" class="footer-center"
-                        style="text-align: left; width: 100%; padding-left: 60px; padding-right: 60px;">
-                        <tbody>
-                          <tr>
-                            <td colspan="2"
-                              style="padding-top: 36px; padding-bottom: 24px; width: 100%; color: white; font-size: 36px;">
-                              Grade My Faculty
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="2" style="padding-top: 24px; padding-bottom: 48px;">
-                              <table cellpadding="0" cellspacing="0" style="width: 100%">
-                                <tbody>
-                                  <tr>
-                                    <td
-                                      style="width: 100%; height: 1px; max-height: 1px; background-color: #EAECF2; opacity: 0.19">
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </td>
-                          </tr>
                           <tr>
                             <td
-                              style="-ms-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #fff; font-family: 'Postmates Std', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 15px; font-smoothing: always; font-style: normal; font-weight: 400; letter-spacing: 0; line-height: 24px; mso-line-height-rule: exactly; text-decoration: none; vertical-align: top; width: 100%;">
-                              If you have any questions or concerns, we're here to help. Contact us <a style="color: white; font-weight: bold;" href="https://wwww.grademyfaculty.com/contact">here</a>.
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="height: 72px;"></td>
+                              style="padding-top: 24px; -ms-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #000; font-family: 'Postmates Std', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 16px; font-smoothing: always; font-style: normal; font-weight: 400; letter-spacing: -0.18px; line-height: 24px; mso-line-height-rule: exactly; text-decoration: none; vertical-align: top; width: 100%;">
+                              Regards, <br>
+                              <b>Grade My Faculty</b>
+                              </td>
                           </tr>
                         </tbody>
                       </table>
@@ -160,6 +130,6 @@ export default function resetPassword(confirmationCode, isFirstAttempt) {
         </tbody>
       </table>
     </body>
-    </html>
-  `;
+  </html>
+`;
 }
