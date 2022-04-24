@@ -54,7 +54,7 @@ async function generateConfirmationCode(req, res) {
       await transport.sendMail({
         from: process.env.GMAIL,
         to: req.body.email,
-        subject: 'Email Verification',
+        subject: 'Reset Password',
         // eslint-disable-next-line quotes
         html: resetPassword(confirmationCode, true),
       });
@@ -108,7 +108,7 @@ async function handleCodeConfirmation(req, res) {
       await transport.sendMail({
         from: process.env.GMAIL,
         to: req.body.email,
-        subject: 'Email Verification',
+        subject: 'Reset Password',
         // eslint-disable-next-line quotes
         html: resetPassword(confirmationCode, false),
       });

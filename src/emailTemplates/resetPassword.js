@@ -105,9 +105,9 @@ export default function resetPassword(confirmationCode, isFirstAttempt) {
                               </td>
                           </tr>
                           <tr>
-                            <td>
+                            <td style="text-align: center">
                               <div
-                                style="margin-top: 36px; letter-spacing: 4px; -ms-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #ffffff; font-family: 'Postmates Std', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 28px; font-smoothing: always; font-style: normal; font-weight: 600; letter-spacing: 0.7px; line-height: 48px; mso-line-height-rule: exactly; text-decoration: none; vertical-align: top; min-width: 150px; background-color: #999; border-radius: 28px; display: block; text-align: center; text-transform: uppercase">
+                                style="margin-top: 36px; letter-spacing: 4px; -ms-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #ffffff; font-family: 'Postmates Std', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 28px; font-smoothing: always; font-style: normal; font-weight: 600; letter-spacing: 4px; line-height: 48px; mso-line-height-rule: exactly; text-decoration: none; vertical-align: top; min-width: 150px; background-color: #999; border-radius: 28px; display: inline-block; text-align: center; text-transform: uppercase; padding-left: 8px; padding-right: 8px">
                                 ${confirmationCode}
                               </div>
                             </td>

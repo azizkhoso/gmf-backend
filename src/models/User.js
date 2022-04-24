@@ -62,15 +62,6 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.plugin(autoIncrement.plugin, 'User');
 
-UserSchema.post('findOneAndUpdate', async (doc, next) => {
-  if (doc) {
-    // eslint-disable-next-line no-param-reassign
-    doc.confirmationCode = (Math.random() * 10000).toFixed(0);
-    await doc.save();
-  }
-  next();
-});
-
 const User = mongoose.model('User', UserSchema);
 
 export default User;
