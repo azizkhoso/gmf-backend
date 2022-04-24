@@ -207,6 +207,7 @@ const typeDefs = gql`
     updateMember(_id:Int! image:Upload name:String role:String facebookLink:String instagramLink:String linkedinLink:String): Member!
     deleteMember(_id:Int!): ID!
     newRating(faculty:Int! course:String! levelOfDifficulty:Int! isAttendanceMandatory:Boolean! overAllRating:Int! semester:String! tags:[String]! thoughts:String! wouldTakeAgain:Boolean!): Rating!
+    updateRating(_id:Int! course:String levelOfDifficulty:Int isAttendanceMandatory:Boolean overAllRating:Int semester:String tags:[String] thoughts:String wouldTakeAgain:Boolean): Rating!
     addLike(rating:Int!): Int!
     addDisLike(rating:Int!): Int!
     adminDeleteRating(_id:Int!): ID!

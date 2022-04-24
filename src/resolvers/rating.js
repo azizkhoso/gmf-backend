@@ -108,6 +108,40 @@ const newRating = async (parent, args, context) => {
   };
 };
 
+const updateRating = async (parent, args, context) => {
+  if (!context.user) throw new Error('Not logged in or session expired, please login');
+  const oldRating = await Rating.findById(args._id);
+  const fac = await Faculty.findById(oldRating._doc.faculty);
+  if (!fac || !fac._doc) throw new Error('Faculty not found');
+  const usr = await User.findById(context._id);
+  if (!usr || !usr._doc) throw new Error('User not found');
+  // After passing all checks, updating rating record
+  const rating = await Rating.findOneAndUpdate(
+    { _id: args._id },
+    { ...args, user: context._id },
+    { new: true },
+  );
+  // Updating attributes of Faculty
+  // Removing current rating's attributes
+  await fac.updateOne({ $pull: { attributes: { $in: rating.tags } } });
+  // Calculating new attributes
+  // getting attributes of all ratings of the faculty
+  const ratingsAndTags = await Rating.find(
+    { _id: { $in: fac._doc.ratings } },
+    { _id: 1, tags: 1 },
+  );
+  const overAllAttributes = new Set(); // Set automatically ignores duplicate values
+  ratingsAndTags.forEach((r) => {
+    r._doc.tags.forEach((t) => overAllAttributes.add(t));
+  });
+  fac.updateOne({ $set: { attributes: [...overAllAttributes] } });
+  return {
+    ...rating._doc,
+    user: user.bind(this, rating._doc.user),
+    faculty: faculty.bind(this, rating._doc.faculty),
+  };
+};
+
 const addLike = async (parent, args, context) => {
   if (!context.user) throw new Error('Not logged in or session expired, please login');
   const rating = await Rating.findOne({ _id: args.rating });
@@ -207,6 +241,7 @@ export default {
   },
   mutationResolvers: {
     newRating,
+    updateRating,
     addLike,
     addDisLike,
     saveFaculty,
