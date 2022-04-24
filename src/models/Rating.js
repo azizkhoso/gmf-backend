@@ -30,12 +30,8 @@ const RatingSchema = mongoose.Schema({
     required: true,
     default: new Date(),
   },
-  gradeOfUser: {
-    type: String,
-    required: true,
-  },
   overAllRating: {
-    type: Number,
+    type: Number, // 1 to 12, 12 = A, 1 = F
     required: true,
     default: 0,
   },

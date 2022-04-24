@@ -55,7 +55,6 @@ const typeDefs = gql`
     course: String!
     semester: String!
     createdAt: Date!
-    gradeOfUser: String!
     overAllRating: Int!
     levelOfDifficulty: Float!
     tags: [String]!
@@ -207,7 +206,7 @@ const typeDefs = gql`
     newMember(image:Upload! name:String! role:String! facebookLink:String! instagramLink:String! linkedinLink:String!): Member!
     updateMember(_id:Int! image:Upload name:String role:String facebookLink:String instagramLink:String linkedinLink:String): Member!
     deleteMember(_id:Int!): ID!
-    newRating(faculty:Int! course:String! levelOfDifficulty:Int! gradeOfUser:String! isAttendanceMandatory:Boolean! overAllRating:Int! semester:String! tags:[String]! thoughts:String! wouldTakeAgain:Boolean!): Rating!
+    newRating(faculty:Int! course:String! levelOfDifficulty:Int! isAttendanceMandatory:Boolean! overAllRating:Int! semester:String! tags:[String]! thoughts:String! wouldTakeAgain:Boolean!): Rating!
     addLike(rating:Int!): Int!
     addDisLike(rating:Int!): Int!
     adminDeleteRating(_id:Int!): ID!

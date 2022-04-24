@@ -113,7 +113,6 @@ const rating = async (ratingId) => {
     course: 'N/A',
     semester: 'N/A',
     createdAt: new Date(),
-    gradeOfUser: 'N/A',
     overAllRating: 0,
     levelOfDifficulty: 0,
     tags: [],
