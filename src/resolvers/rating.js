@@ -122,8 +122,8 @@ const updateRating = async (parent, args, context) => {
     { new: true },
   );
   // Updating attributes of Faculty
-  // Removing current rating's attributes
-  await fac.updateOne({ $pull: { attributes: { $in: rating.tags } } });
+  // Removing current old rating's attributes
+  await fac.updateOne({ $pull: { attributes: { $in: oldRating.tags } } });
   // Calculating new attributes
   // getting attributes of all ratings of the faculty
   const ratingsAndTags = await Rating.find(
@@ -134,7 +134,7 @@ const updateRating = async (parent, args, context) => {
   ratingsAndTags.forEach((r) => {
     r._doc.tags.forEach((t) => overAllAttributes.add(t));
   });
-  fac.updateOne({ $set: { attributes: [...overAllAttributes] } });
+  fac.updateOne({ $push: { attributes: [...overAllAttributes, ...args.tags] } });
   return {
     ...rating._doc,
     user: user.bind(this, rating._doc.user),
@@ -228,7 +228,7 @@ const deleteRating = async (parent, args, context) => {
       ratingsAndTags.forEach((r) => {
         r._doc.tags.forEach((t) => overAllAttributes.add(t));
       });
-      fac.updateOne({ $set: { attributes: [...overAllAttributes] } });
+      fac.updateOne({ $push: { attributes: [...overAllAttributes] } });
     }
   } else throw new Error('Rating not found in your account');
   return args._id;
