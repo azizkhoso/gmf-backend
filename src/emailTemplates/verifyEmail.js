@@ -7,7 +7,7 @@ export default function verifyEmail(firstName, email, confirmationCode) {
           GRADE MY FACULTY
       </div>
         <div style="text-align: center;">
-          <img src="https://www.grademyfaculty.com/person.svg" alt="person" style="width: 50%; max-width: 250px; padding-top: 28px; padding-bottom: 28px;" />
+          <img src="https://www.grademyfaculty.com/gmail-assets/person.ico" alt="person" style="width: 50%; max-width: 250px; padding-top: 28px; padding-bottom: 28px;" />
         </div>
         <h3 style="color: gray;">Hi ${firstName},</h3>
         <p>Thank you for registering in Grade My Faculty. Please click on the button to complete the verification process for ${email}</p>

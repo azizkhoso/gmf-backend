@@ -69,7 +69,7 @@ export default function resetPassword(confirmationCode, isFirstAttempt) {
                         <tbody>
                           <tr>
                             <td style="padding-top: 24px; text-align: center;">
-                              <img src="https://www.grademyfaculty.com/person.svg"
+                              <img src="https://www.grademyfaculty.com/gmail-assets/person.ico"
                                 style="width: 50%; max-width: 250px;">
                             </td>
                           </tr>
