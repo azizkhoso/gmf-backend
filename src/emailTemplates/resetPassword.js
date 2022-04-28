@@ -68,12 +68,6 @@ export default function resetPassword(confirmationCode, isFirstAttempt) {
                         style="text-align: left; padding-bottom: 88px; width: 100%; padding-left: 60px; padding-right: 60px;">
                         <tbody>
                           <tr>
-                            <td style="padding-top: 24px; text-align: center;">
-                              <img src="https://www.grademyfaculty.com/gmail-assets/person.ico"
-                                style="width: 50%; max-width: 250px;">
-                            </td>
-                          </tr>
-                          <tr>
                             <td colspan="2"
                               style="padding-top: 28px; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: rgb(119, 120, 240); font-family: 'Postmates Std', 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 32px; font-smoothing: always; font-style: normal; font-weight: 600; letter-spacing: -2.6px; line-height: 52px; mso-line-height-rule: exactly; text-decoration: none;">
                               Reset your password</td>

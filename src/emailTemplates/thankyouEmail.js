@@ -59,9 +59,6 @@ export default function thankyouEmail(firstName) {
               <h1 style="text-align: center;">GRADE MY FACULTY</h1>
             </div>
             <div class="email-content">
-        <div style="text-align: center;">
-          <img src="https://www.grademyfaculty.com/gmail-assets/person.ico" alt="person" style="width: 50%; max-width: 250px; padding-top: 28px; padding-bottom: 28px;" />
-        </div>
               <p>Hi ${firstName}!</p>
               <p>Thank you for joinging Grade My Faculty!
                 With your account you have the options to save the professors, edit and add your ratings, while being anonymous!</p>
