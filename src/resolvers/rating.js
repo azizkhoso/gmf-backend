@@ -90,7 +90,11 @@ const newRating = async (parent, args, context) => {
   const usr = await User.findById(context._id);
   if (!usr || !usr._doc) throw new Error('User not found');
   // After passing all checks, creating rating record
-  const rating = await Rating.create({ ...args, user: context._id });
+  const rating = await Rating.create({
+    ...args,
+    user: context._id,
+    createdAt: (new Date()).toISOString(),
+  });
   // Updating attribute of faculty and adding new rating in list
   const attributes = new Set([...fac.attributes, ...args.tags]);
   await fac.updateOne(
